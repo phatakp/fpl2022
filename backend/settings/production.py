@@ -8,10 +8,7 @@ except ImportError:
     # Production Settings goes here
     import dj_database_url
     import django_heroku
-    WHITENOISE_MIMETYPES = {
-        '.js': 'application/javascript',
-        '.css': 'text/css',
-    }
+
     DEBUG = False
     ALLOWED_HOSTS = ['fpl2022.herokuapp.com']
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware",)
