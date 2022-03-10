@@ -45,3 +45,4 @@ def fix_static(data, i, length, val):
 
 if __name__ == '__main__':
     fix_html()
+    print('Html Fixed')
