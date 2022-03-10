@@ -9,7 +9,6 @@ except ImportError:
     import dj_database_url
     import django_heroku
 
-    DEBUG = False
     ALLOWED_HOSTS = ['fpl2022.herokuapp.com']
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware",)
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

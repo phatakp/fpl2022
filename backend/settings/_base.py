@@ -22,8 +22,8 @@ load_dotenv(BASE_DIR / '.env')
 
 
 SECRET_KEY = getenv("SECRET_KEY")
+DEBUG = getenv("DEBUG") == "True"
 PRODUCTION = getenv("PRODUCTION") == "True"
-DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
