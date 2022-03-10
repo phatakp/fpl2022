@@ -19,7 +19,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "npm run build-copy-html && npm run build-copy-js && npm run build-copy-css",
-    "build-copy-html": "rm -rf ./templates/index.html && cp -r ./build/index.html ./templates/index.html && python fix_html.py",
+    "build-copy-html": "rm -rf ./templates/index.html && cp -r ./build/index.html ./templates/index.html",
     "build-copy-js": "rm -rf ./static/js && cp -r ./build/static/js ./static/js",
     "build-copy-css": "rm -rf ./static/css && cp -r ./build/static/css ./static/css"
   },
