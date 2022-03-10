@@ -122,7 +122,7 @@ STATIC_URL = '/assets/static/'
 MEDIA_URL = '/assets/media/'
 STATIC_ROOT = BASE_DIR / "assets" / "static"
 MEDIA_ROOT = BASE_DIR / "assets" / "media"
-
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # User Model
 AUTH_USER_MODEL = 'apiusers.UserAccount'
