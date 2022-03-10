@@ -1,0 +1,48 @@
+{
+  "name": "frontend",
+  "homepage": ".",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:8000/",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "5.0.0",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && npm run deploy",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploy": "npm run build-copy-html && npm run build-copy-js && npm run build-copy-css",
+    "build-copy-html": "rm -rf ./templates/index.html && cp -r ./build/index.html ./templates/index.html && python fix_html.py",
+    "build-copy-js": "rm -rf ./static/js && cp -r ./build/static/js ./static/js",
+    "build-copy-css": "rm -rf ./static/css && cp -r ./build/static/css ./static/css"
+  },
+  "engines": {
+    "node": "14.18.1",
+    "npm": "6.14.15"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
