@@ -19,7 +19,3 @@ except ImportError:
         "https://fpl2022.herokuapp.com",
     ]
     django_heroku.settings(locals())
-
-    # Add these at the very last line of settings.py
-    options = DATABASES['default'].get('OPTIONS', {})
-    options.pop('sslmode', None)
