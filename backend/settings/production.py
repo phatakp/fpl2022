@@ -6,8 +6,12 @@ try:
     from .local import *
 except ImportError:
     # Production Settings goes here
+    import mimetypes
+
     import dj_database_url
     import django_heroku
+    mimetypes.add_type("text/css", ".css", True)
+    mimetypes.add_type("text/javascript", ".js", True)
     DEBUG = False
     ALLOWED_HOSTS = ['fpl2022.herokuapp.com']
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware",)
