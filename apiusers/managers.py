@@ -34,20 +34,20 @@ class UserAccountManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-# class UserProfileManager(models.Manager):
-#     def get_object_or_none(self, *args, **kwargs):
-#         try:
-#             return super().get(*args, **kwargs)
-#         except:
-#             return
+class UserProfileManager(models.Manager):
+    def get_object_or_none(self, *args, **kwargs):
+        try:
+            return super().get(*args, **kwargs)
+        except:
+            return
 
-#     def bulk_create(self, objs, **kwargs):
-#         for item in objs:
-#             pre_save.send(item.__class__, instance=item)
-#         a = super().bulk_create(objs, **kwargs)
-#         for item in objs:
-#             post_save.send(item.__class__, instance=item, created=True)
-#         return a
+    def bulk_create(self, objs, **kwargs):
+        for item in objs:
+            pre_save.send(item.__class__, instance=item)
+        a = super().bulk_create(objs, **kwargs)
+        for item in objs:
+            post_save.send(item.__class__, instance=item, created=True)
+        return a
 
-#     def get_queryset(self):
-#         return super().get_queryset().select_related('user', 'ipl_winner')
+    def get_queryset(self):
+        return super().get_queryset().select_related('user', 'ipl_winner')

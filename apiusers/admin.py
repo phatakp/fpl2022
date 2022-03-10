@@ -8,3 +8,9 @@ from .models import *
 @admin.register(UserAccount)
 class UserAccountAdmin(admin.ModelAdmin):
     list_display = ('email', 'name', 'is_staff')
+
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'ipl_winner', 'played',
+                    'won', 'lost', 'amount', 'ipl_admin')

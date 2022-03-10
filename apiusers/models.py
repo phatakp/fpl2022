@@ -19,3 +19,24 @@ class UserAccount(AbstractUser):
 
     def __str__(self) -> str:
         return self.name.title()
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        UserAccount, on_delete=models.CASCADE, related_name='profile')
+    ipl_winner = models.ForeignKey('apiteams.Team',
+                                   on_delete=models.CASCADE,
+                                   null=True)
+    ipl_admin = models.BooleanField(_('IPL Admin'), default=False)
+    played = models.PositiveSmallIntegerField(default=0)
+    won = models.PositiveSmallIntegerField(default=0)
+    lost = models.PositiveSmallIntegerField(default=0)
+    amount = models.FloatField(default=0)
+
+    objects = UserProfileManager()
+
+    def __str__(self) -> str:
+        return str(self.user)
+
+    class Meta:
+        ordering = ('-amount', '-won', 'lost')

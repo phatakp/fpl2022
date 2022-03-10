@@ -44,7 +44,11 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'apiusers',
+    'apiusers.apps.ApiusersConfig',
+    'apiteams.apps.ApiteamsConfig',
+    'apimatches.apps.ApimatchesConfig',
+    'apipredictions.apps.ApipredictionsConfig',
+    'apistats.apps.ApistatsConfig',
 ]
 
 
@@ -150,3 +154,63 @@ JWT_COOKIE_SECURE = getenv("JWT_COOKIE_SECURE") == "True"
 
 # Cors Configuration
 CORS_ALLOW_CREDENTIALS = True
+
+
+# Local Apps Configuration
+TEAM_CHOICES = [
+    ('CSK', 'Chennai Super Kings'),
+    ('DC', 'Delhi Capitals'),
+    ('KKR', 'Kolkata Knight Riders'),
+    ('MI', 'Mumbai Indians'),
+    ('SRH', 'Sunrisers Hyderabad'),
+    ('RCB', 'Royal Challengers Bangalore'),
+    ('RR', 'Rajasthan Royals'),
+    ('PBKS', 'Punjab Kings'),
+    ('KOC', 'Kochi Tuskers'),
+    ('RPSG', 'Rising Pune Supergiants'),
+    ('GL', 'Gujarat Lions'),
+    ('GT', 'Gujarat Titans'),
+    ('LSG', 'Lucknow Super Giants'),
+]
+
+MATCH_STATUS = [
+    ("scheduled", "Scheduled"),
+    ("completed", "Completed"),
+    ("abandoned", "Abandoned"),
+]
+
+MATCH_TYPES = [
+    ("league", "League"),
+    ("qualifier1", "Qualifier-1"),
+    ("qualifier2", "Qualifier-2"),
+    ("eliminator", "Eliminator"),
+    ("final", "Final"),
+]
+
+WIN_TYPES = [
+    ('runs', 'Runs'),
+    ('wickets', 'Wickets'),
+    ('super', 'Super Over'),
+]
+
+STATS_MATCH_TYPES = [
+    ("league", "League"),
+    ("knockout", "KnockOut"),
+]
+
+PREDICTION_STATUS_TYPES = [
+    ("placed", "Placed"),
+    ("defaulted", "Defaulted"),
+    ("won", "Won"),
+    ("lost", "Lost"),
+    ("no-result", "No Result"),
+]
+
+STATS_TYPES = [
+    ("all", "All"),
+    ("home", "Home"),
+    ("away", "Away"),
+    ("batfirst", "Bat First"),
+    ("knockout", "Knockout"),
+    ("last10", "Last10"),
+]

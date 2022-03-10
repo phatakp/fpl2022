@@ -9,9 +9,8 @@ from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.tokens import RefreshToken as RefreshTokenModel
 from rest_framework_simplejwt.views import TokenViewBase
 
-from . import serializers
-
-# from .models import UserProfile
+from .models import UserProfile
+from .serializers import *
 
 
 class TokenViewBaseWithCookie(TokenViewBase):
@@ -44,11 +43,11 @@ class TokenViewBaseWithCookie(TokenViewBase):
 
 
 class RefreshTokenView(TokenViewBaseWithCookie):
-    serializer_class = serializers.TokenRefreshSerializer
+    serializer_class = TokenRefreshSerializer
 
 
 class LoginView(TokenViewBaseWithCookie):
-    serializer_class = serializers.TokenObtainPairSerializer
+    serializer_class = TokenObtainPairSerializer
 
 
 class LogoutView(APIView):
@@ -63,20 +62,20 @@ class LogoutView(APIView):
 
 
 class RegisterView(generics.CreateAPIView):
-    serializer_class = serializers.UserSerializer
+    serializer_class = UserSerializer
     permission_classes = (permissions.AllowAny,)
 
 
-# class UserListView(generics.ListAPIView):
-#     serializer_class = serializers.UserProfileSerializer
-#     permission_classes = (permissions.AllowAny,)
-#     queryset = UserProfile.objects.exclude(user__is_staff=True)
+class UserListView(generics.ListAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = (permissions.AllowAny,)
+    queryset = UserProfile.objects.exclude(user__is_staff=True)
 
 
-# class LoadUserView(generics.RetrieveAPIView):
-#     serializer_class = serializers.UserProfileSerializer
-#     permission_classes = (permissions.IsAuthenticated,)
-#     queryset = UserProfile.objects.exclude(user__is_staff=True)
+class LoadUserView(generics.RetrieveAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = UserProfile.objects.exclude(user__is_staff=True)
 
-#     def get_object(self):
-#         return UserProfile.objects.get_object_or_none(user=self.request.user)
+    def get_object(self):
+        return UserProfile.objects.get_object_or_none(user=self.request.user)

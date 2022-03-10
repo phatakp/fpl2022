@@ -6,7 +6,11 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', include('apiusers.urls')),
+    path('api/teams/', include('apiteams.urls')),
+    path('api/matches/', include('apimatches.urls')),
+    path('api/matches/stats/', include('apistats.urls')),
+    path('api/predictions/', include('apipredictions.urls')),
+    path('api/', include('apiusers.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,4 +1,5 @@
 
+from apiteams.serializers import TeamSerializer
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -9,12 +10,10 @@ from rest_framework_simplejwt import serializers as jwt_serializers
 from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
-# from teams.serializers import TeamSerializer
+from .models import UserProfile
 
-# from .models import UserProfile
-
-# Team = apps.get_model('teams', 'Team')
-# Prediction = apps.get_model('predictions', "Prediction")
+Team = apps.get_model('apiteams', 'Team')
+Prediction = apps.get_model('apipredictions', "Prediction")
 
 
 class TokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
@@ -81,12 +80,12 @@ class TokenRefreshSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
-    # winner = serializers.CharField(required=True, write_only=True)
+    winner = serializers.CharField(required=True, write_only=True)
 
     class Meta:
         model = get_user_model()
         fields = ('id', 'email', 'name', 'password',
-                  'password2')  # , 'winner')
+                  'password2', 'winner')
         extra_kwargs = {
             'name': {'required': True},
             'id': {'read_only': True},
@@ -106,11 +105,11 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(_("Name is required"))
         return name
 
-    # def validate_winner(self, value):
-    #     team = Team.objects.get_object_or_none(short_name=value)
-    #     if not team:
-    #         raise serializers.ValidationError(f"Invalid Team {value}")
-    #     return team
+    def validate_winner(self, value):
+        team = Team.objects.get_object_or_none(short_name=value)
+        if not team:
+            raise serializers.ValidationError(f"Invalid Team {value}")
+        return team
 
     def validate(self, data):
         if data['password'] != data['password2']:
@@ -120,20 +119,20 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop("password2")
-        # winner = validated_data.pop('winner')
+        winner = validated_data.pop('winner')
         user = get_user_model().objects.create_user(**validated_data)
-        # profile = UserProfile.objects.create(user=user, ipl_winner=winner)
-        # Prediction.objects.create(user=user,
-        #                           team=profile.ipl_winner,
-        #                           amount=500,
-        #                           ipl_winner=True)
+        profile = UserProfile.objects.create(user=user, ipl_winner=winner)
+        Prediction.objects.create(user=user,
+                                  team=profile.ipl_winner,
+                                  amount=500,
+                                  ipl_winner=True)
         return user
 
 
-# class UserProfileSerializer(serializers.ModelSerializer):
-#     user = UserSerializer(many=False, read_only=True)
-#     ipl_winner = TeamSerializer(many=False, read_only=True)
+class UserProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(many=False, read_only=True)
+    ipl_winner = TeamSerializer(many=False, read_only=True)
 
-#     class Meta:
-#         model = UserProfile
-#         fields = '__all__'
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
