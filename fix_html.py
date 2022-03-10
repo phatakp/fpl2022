@@ -3,7 +3,7 @@ import os
 import django
 from django.conf import settings
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings.production')
 django.setup()
 file_path = settings.BASE_DIR / "templates" / "index.html"
 DJANGO_LOAD_STATIC = "{% load static %}"
