@@ -570,5 +570,5 @@ if __name__ == '__main__':
     load_teams()
     load_matches()
     load_history()
-    create_users()
+    # create_users()
     # load_predictions()
