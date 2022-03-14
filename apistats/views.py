@@ -14,24 +14,12 @@ class TeamAllStatsView(views.APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = TeamStatsSerializer
 
-    def get_queryset(self):
-        qs = TeamStats.objects.all()
-        team1 = self.request.query_params.get('team1')
-        team2 = self.request.query_params.get('team2')
-        try:
-            if not team1 and not team2:
-                raise ValueError
-            else:
-                qs = qs.filter(Q(team1__short_name=team1, team2__short_name=team2) |
-                               Q(team1__short_name=team2, team2__short_name=team1)).order_by('team1', 'team2')
-                return qs
-        except:
-            return None
-
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        if queryset is None:
-            return Response('Invalid Teams')
+        queryset = TeamStats.objects \
+            .filter(Q(team1__short_name=kwargs.get('team1')) |
+                    Q(team1__short_name=kwargs.get('team2'))) \
+            .filter(Q(team2__short_name=kwargs.get('team1')) |
+                    Q(team2__short_name=kwargs.get('team2')))
 
         result = dict()
         for record in queryset:

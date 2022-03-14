@@ -1,0 +1,78 @@
+.topnav {
+    /* background: #19398a url(../images/bannerBg.png) no-repeat left center; */
+    box-shadow: 0 4px 8px 0 hsl(0deg 0% 7% / 50%);
+    color: white;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar-brand h4 {
+    color: white;
+    margin-bottom: 0;
+}
+
+.navbar-toggler {
+    color: #222 !important;
+    border: none;
+    border-color: transparent !important;
+}
+
+.navbar-toggler:focus {
+    outline: none !important;
+}
+
+.navbar-toggler .fabars {
+    display: none;
+}
+
+.navbar-toggler .fatimes {
+    display: flex;
+}
+
+.navbar-toggler.collapsed .fatimes {
+    display: none;
+}
+
+.navbar-toggler.collapsed .fabars {
+    display: flex;
+}
+
+.navbar-toggler svg {
+    fill: #fff;
+}
+
+.nav-link {
+    color: white !important;
+    text-transform: capitalize;
+    width: max-content;
+    text-align: center;
+    margin-right: 1rem;
+    position: relative;
+}
+
+.nav-link.active {
+    color: salmon !important;
+    border-bottom: 2px solid salmon;
+}
+
+
+#profile-dropdown {
+    margin-left: 3rem;
+}
+
+#profile-dropdown span {
+    margin-right: .5rem;
+}
+
+
+
+@media screen and (max-width:991px) {
+    #profile-dropdown {
+        margin-left: 0;
+    }
+
+}

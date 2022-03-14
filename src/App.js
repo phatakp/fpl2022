@@ -1,20 +1,31 @@
+import { Route, Routes } from "react-router-dom";
+import { NavBar } from "./components";
+import { Account, Dashboard, Home, Match, Matches, NotFound } from "./pages";
+import { AuthContextProvider } from "./store/context/authContext";
+import { DataContextProvider } from "./store/context/dataContext";
+
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContextProvider>
+      <DataContextProvider>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Account page="Login" />} />
+          <Route path="/register" element={<Account page="Register" />} />
+          <Route path="/chg-password" element={<Account page="ChgPwd" />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/fixtures" element={<Matches fixturePage={true} />} />
+          <Route path="/results" element={<Matches fixturePage={false} />} />
+          <Route path="/stats/:slug" element={<Match statsPage={true} />} />
+          <Route
+            path="/predictions/:slug"
+            element={<Match statsPage={false} />}
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </DataContextProvider>
+    </AuthContextProvider>
   );
 }
 

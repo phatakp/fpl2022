@@ -2,7 +2,7 @@ from collections import Counter
 
 import pandas as pd
 from django.apps import apps
-from django.db.models import Count, F, Q, Sum
+from django.db.models import Q, Sum
 
 from .models import *
 

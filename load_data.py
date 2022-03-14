@@ -32,11 +32,29 @@ def load_matches():
     results = []
     # maxnum = 0
 
-    # url = "https://www.iplt20.com/matches/results/men/2021"
-    # session = HTMLSession()
-    # r = session.get(url)
-    # matches = r.html.find('#team_archive', first=True)
-    # for element in matches.find('li')[::-1]:
+    url = "https://www.iplt20.com/matches/schedule/men"
+    session = HTMLSession()
+    r = session.get(url)
+    matches = r.html.find('.vn-sheduleList', first=True)
+    for element in matches.find('li'):
+        teams = []
+        num_n_date = element.find('.vn-matchno')[0].text
+        num_str, date_str = num_n_date.split(' | ')
+        num = int(num_str.split('-')[-1])
+        time = element.find('.vn-date')[0].text
+        date_str += ' ' + time.split(' IST ')[0] + ' +0530'
+        date = datetime.strptime(date_str, "%A %d %B, %Y %H:%M %z")
+        for team in element.find('.vn-shedTeam'):
+            teams.append(team.find('h3')[0].text)
+
+        venue = element.find('.vn-matchTime')[0].find('p')[0].text
+        match = Match(num=num, date=date, team1=Team.objects.get(long_name=teams[0]), team2=Team.objects.get(long_name=teams[1]),
+                      type='league', venue=venue)
+        objs.append(match)
+        results.append(MatchResult(match=match))
+    Match.objects.bulk_create(objs)
+    MatchResult.objects.bulk_create(results)
+    print("Match Details saved successfully")
     #     teams = []
     #     scores = []
     #     overs = []
@@ -84,82 +102,125 @@ def load_matches():
     #     results.append(MatchResult(match=match, status="completed", winner=winner,
     #                                win_type=win_type, win_margin=margin))
 
-    matches = [
-        {"num": 1, "date": datetime.strptime("25 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "CSK", "team2": "MI", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "170/9", "team2_score": "175/4",
-         "team1_overs": "20", "team2_overs": "18.3", "status": "completed", "winner": "MI", "win_type": "wickets", "win_margin": 6},
-        {"num": 2, "date": datetime.strptime("26 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "RR", "team2": "RCB", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "170/9", "team2_score": "175/4",
-         "team1_overs": "20", "team2_overs": "18.3", "status": "completed", "winner": "RCB", "win_type": "wickets", "win_margin": 6},
-        {"num": 3, "date": datetime.strptime("27 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "LSG", "team2": "GT", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "170/9", "team2_score": "175/4",
-         "team1_overs": "20", "team2_overs": "18.3", "status": "completed", "winner": "GT", "win_type": "wickets", "win_margin": 6},
-        {"num": 4, "date": datetime.strptime("28 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "PBKS", "team2": "KKR", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "170/9", "team2_score": "175/4",
-         "team1_overs": "20", "team2_overs": "18.3", "status": "completed", "winner": "KKR", "win_type": "wickets", "win_margin": 6},
-        {"num": 5, "date": datetime.strptime("29 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "DC", "team2": "SRH", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "170/9", "team2_score": "175/4",
-         "team1_overs": "20", "team2_overs": "18.3", "status": "completed", "winner": "SRH", "win_type": "wickets", "win_margin": 6},
-        {"num": 6, "date": datetime.strptime("30 March, 2022 15:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "MI", "team2": "RCB", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "170/9", "team2_score": "175/4",
-         "team1_overs": "20", "team2_overs": "20", "status": "completed", "winner": "RCB", "win_type": "runs", "win_margin": 5},
-        {"num": 7, "date": datetime.strptime("30 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "RR", "team2": "CSK", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "170/9", "team2_score": "175/4",
-         "team1_overs": "20", "team2_overs": "20", "status": "completed", "winner": "CSK", "win_type": "runs", "win_margin": 5},
-        {"num": 8, "date": datetime.strptime("31 March, 2022 15:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "LSG", "team2": "KKR", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "170/9", "team2_score": "175/4",
-         "team1_overs": "20", "team2_overs": "20", "status": "completed", "winner": "KKR", "win_type": "runs", "win_margin": 5},
-        {"num": 9, "date": datetime.strptime("31 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "GT", "team2": "DC", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "170/9", "team2_score": "175/4",
-         "team1_overs": "20", "team2_overs": "20", "status": "completed", "winner": "DC", "win_type": "runs", "win_margin": 5},
-        {"num": 10, "date": datetime.strptime("1 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "SRH", "team2": "PBKS", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "30/1", "team2_score": "175/4",
-         "team1_overs": "4.1", "team2_overs": "20", "status": "abandoned", "winner": None, "win_type": None, "win_margin": None},
-        {"num": 11, "date": datetime.strptime("2 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "CSK", "team2": "LSG", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
-        {"num": 12, "date": datetime.strptime("3 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "MI", "team2": "GT", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
-        {"num": 13, "date": datetime.strptime("4 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "PBKS", "team2": "RR", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
-        {"num": 14, "date": datetime.strptime("5 April, 2022 15:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "KKR", "team2": "RCB", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
-        {"num": 15, "date": datetime.strptime("5 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "DC", "team2": "SRH", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
-        {"num": 16, "date": datetime.strptime("6 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "KKR", "team2": "CSK", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
-        {"num": 17, "date": datetime.strptime("7 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "PBKS", "team2": "GT", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
-        {"num": 18, "date": datetime.strptime("8 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "SRH", "team2": "RR", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
-        {"num": 19, "date": datetime.strptime("9 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "LSG", "team2": "PBKS", 'type': "qualifier1", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "min_bet": 50, "winner": None, "win_type": None, "win_margin": None},
-        {"num": 20, "date": datetime.strptime("10 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "MI", "team2": "CSK", 'type': "eliminator", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "min_bet": 50, "winner": None, "win_type": None, "win_margin": None},
-        {"num": 21, "date": datetime.strptime("12 April, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
-         "team1": "LSG", "team2": "CSK", 'type': "final", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
-         "team1_overs": None, "team2_overs": None, "status": "scheduled", "min_bet": 100, "winner": None, "win_type": None, "win_margin": None},
-    ]
+    # matches = [
+    #     {"num": 1, "date": datetime.strptime("05 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "CSK", "team2": "MI", 'type': "league", "venue": "Eden Gardens, Kolkata",
+    #      "team1_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "team2_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "win_type": random.choice(["runs", "wickets"]),
+    #      "status": "completed", "winner": random.choice(["CSK", "MI"])},
 
-    for item in matches:
-        match = Match(num=item.get('num'), date=item.get('date'), team1=Team.objects.get(short_name=item.get('team1')), team2=Team.objects.get(short_name=item.get('team2')),
-                      type=item.get('type'), venue=item.get('venue'), team1_score=item.get("team1_score"), team2_score=item.get("team2_score"), min_bet=item.get("min_bet", 30),
-                      team1_overs=item.get("team1_overs"), team2_overs=item.get("team2_overs"))
-        objs.append(match)
-        results.append(MatchResult(match=match, status=item.get('status'), winner=Team.objects.get_object_or_none(short_name=item.get("winner")),
-                                   win_type=item.get("win_type"), win_margin=item.get("win_margin")))
-    Match.objects.bulk_create(objs)
-    MatchResult.objects.bulk_create(results)
-    print("Match Details saved successfully")
+    #     {"num": 2, "date": datetime.strptime("06 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "RR", "team2": "RCB", 'type': "league", "venue": "Eden Gardens, Kolkata",
+    #      "team1_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "team2_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "win_type": random.choice(["runs", "wickets"]),
+    #      "status": "completed", "winner": random.choice(["RR", "RCB"])},
+
+    #     {"num": 3, "date": datetime.strptime("07 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "LSG", "team2": "GT", 'type': "league", "venue": "Eden Gardens, Kolkata",
+    #      "team1_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "team2_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "win_type": random.choice(["runs", "wickets"]),
+    #      "status": "completed", "winner": random.choice(["LSG", "GT"])},
+
+    #     {"num": 4, "date": datetime.strptime("08 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "PBKS", "team2": "KKR", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "team2_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "win_type": random.choice(["runs", "wickets"]),
+    #      "status": "completed", "winner": random.choice(["PBKS", "KKR"])},
+
+    #     {"num": 5, "date": datetime.strptime("09 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "DC", "team2": "SRH", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "team2_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "win_type": random.choice(["runs", "wickets"]),
+    #      "status": "completed", "winner": random.choice(["DC", "SRH"])},
+
+    #     {"num": 6, "date": datetime.strptime("10 March, 2022 15:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "MI", "team2": "RCB", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "team2_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "win_type": random.choice(["runs", "wickets"]),
+    #      "status": "completed", "winner": random.choice(["RCB", "MI"])},
+
+    #     {"num": 7, "date": datetime.strptime("10 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "RR", "team2": "CSK", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "team2_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "win_type": random.choice(["runs", "wickets"]),
+    #      "status": "completed", "winner": random.choice(["CSK", "RR"])},
+
+    #     {"num": 8, "date": datetime.strptime("11 March, 2022 15:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "LSG", "team2": "KKR", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "team2_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "win_type": random.choice(["runs", "wickets"]),
+    #      "status": "completed", "winner": random.choice(["KKR", "LSG"])},
+
+    #     {"num": 9, "date": datetime.strptime("11 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "GT", "team2": "DC", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "team2_score": f"{random.randint(150,200)}/{random.randint(1,10)}",
+    #      "win_type": random.choice(["runs", "wickets"]),
+    #      "status": "completed", "winner": random.choice(["GT", "DC"])},
+
+    #     {"num": 10, "date": datetime.strptime("12 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "SRH", "team2": "PBKS", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": "30/1", "team2_score": "175/4",
+    #      "team1_overs": "4.1", "team2_overs": "20", "status": "abandoned", "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 11, "date": datetime.strptime("12 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "CSK", "team2": "LSG", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 12, "date": datetime.strptime("14 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "MI", "team2": "GT", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 13, "date": datetime.strptime("14 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "PBKS", "team2": "RR", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 14, "date": datetime.strptime("15 March, 2022 15:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "KKR", "team2": "RCB", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 15, "date": datetime.strptime("15 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "DC", "team2": "SRH", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 16, "date": datetime.strptime("16 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "KKR", "team2": "CSK", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 17, "date": datetime.strptime("17 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "PBKS", "team2": "GT", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 18, "date": datetime.strptime("18 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "SRH", "team2": "RR", 'type': "league", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 19, "date": datetime.strptime("19 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "LSG", "team2": "PBKS", 'type': "qualifier1", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "min_bet": 50, "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 20, "date": datetime.strptime("20 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "MI", "team2": "CSK", 'type': "eliminator", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "min_bet": 50, "winner": None, "win_type": None, "win_margin": None},
+
+    #     {"num": 21, "date": datetime.strptime("21 March, 2022 19:30 +0530", "%d %B, %Y %H:%M %z"),
+    #      "team1": "LSG", "team2": "CSK", 'type': "final", "venue": "Eden Gardens, Kolkata", "team1_score": None, "team2_score": None,
+    #      "team1_overs": None, "team2_overs": None, "status": "scheduled", "min_bet": 100, "winner": None, "win_type": None, "win_margin": None},
+    # ]
+
+    # for item in matches:
+    #     match = Match(num=item.get('num'), date=item.get('date'), team1=Team.objects.get(short_name=item.get('team1')), team2=Team.objects.get(short_name=item.get('team2')),
+    #                   type=item.get('type'), venue=item.get('venue'), team1_score=item.get("team1_score"), team2_score=item.get("team2_score"), min_bet=item.get("min_bet", 30),
+    #                   team1_overs=item.get("team1_overs", 20), team2_overs=item.get("team2_overs", 20))
+    #     objs.append(match)
+    #     results.append(MatchResult(match=match, status=item.get('status'), winner=Team.objects.get_object_or_none(short_name=item.get("winner")),
+    #                                win_type=item.get("win_type", None), win_margin=item.get("win_margin")))
+    # results[0].win_type = 'super'
+    # results[6].win_type = 'super'
+    # Match.objects.bulk_create(objs)
+    # MatchResult.objects.bulk_create(results)
+    # print("Match Details saved successfully")
 
 
 def load_history():
@@ -298,69 +359,69 @@ def create_users():
         active=True).values_list('short_name', flat=True)
     headers = {'content-type': 'application/json'}
     params = [
-        {
-            "email": "demouser@gmail.com",
-            "password": "imintcs3",
-            "password2": "imintcs3",
-            "name": "Demo1 User",
-            'winner': random.choice(teams),
-        },
-        {
-            "email": "demouser2@gmail.com",
-            "password": "imintcs3",
-            "password2": "imintcs3",
-            "name": "Demo2 User",
-            'winner': random.choice(teams),
-        },
-        {
-            "email": "demouser3@gmail.com",
-            "password": "imintcs3",
-            "password2": "imintcs3",
-            "name": "Demo3 User",
-            'winner': random.choice(teams),
-        },
-        {
-            "email": "demouser4@gmail.com",
-            "password": "imintcs3",
-            "password2": "imintcs3",
-            "name": "Demo4 User",
-            'winner': random.choice(teams),
-        },
-        {
-            "email": "demouser5@gmail.com",
-            "password": "imintcs3",
-            "password2": "imintcs3",
-            "name": "Demo5 User",
-            'winner': random.choice(teams),
-        },
-        {
-            "email": "demouser6@gmail.com",
-            "password": "imintcs3",
-            "password2": "imintcs3",
-            "name": "Demo6 User",
-            'winner': random.choice(teams),
-        },
-        {
-            "email": "demouser7@gmail.com",
-            "password": "imintcs3",
-            "password2": "imintcs3",
-            "name": "Demo7 User",
-            'winner': random.choice(teams),
-        },
-        {
-            "email": "demouser8@gmail.com",
-            "password": "imintcs3",
-            "password2": "imintcs3",
-            "name": "Demo8 User",
-            'winner': random.choice(teams),
-        },
-        {
-            "email": "demouser9@gmail.com",
-            "password": "imintcs3",
-            "password2": "imintcs3",
-            "name": "Demo9 User",
-            'winner': random.choice(teams),
-        },
+        # {
+        #     "email": "demouser@gmail.com",
+        #     "password": "imintcs3",
+        #     "password2": "imintcs3",
+        #     "name": "Demo1 User",
+        #     'winner': random.choice(teams),
+        # },
+        # {
+        #     "email": "demouser2@gmail.com",
+        #     "password": "imintcs3",
+        #     "password2": "imintcs3",
+        #     "name": "Demo2 User",
+        #     'winner': random.choice(teams),
+        # },
+        # {
+        #     "email": "demouser3@gmail.com",
+        #     "password": "imintcs3",
+        #     "password2": "imintcs3",
+        #     "name": "Demo3 User",
+        #     'winner': random.choice(teams),
+        # },
+        # {
+        #     "email": "demouser4@gmail.com",
+        #     "password": "imintcs3",
+        #     "password2": "imintcs3",
+        #     "name": "Demo4 User",
+        #     'winner': random.choice(teams),
+        # },
+        # {
+        #     "email": "demouser5@gmail.com",
+        #     "password": "imintcs3",
+        #     "password2": "imintcs3",
+        #     "name": "Demo5 User",
+        #     'winner': random.choice(teams),
+        # },
+        # {
+        #     "email": "demouser6@gmail.com",
+        #     "password": "imintcs3",
+        #     "password2": "imintcs3",
+        #     "name": "Demo6 User",
+        #     'winner': random.choice(teams),
+        # },
+        # {
+        #     "email": "demouser7@gmail.com",
+        #     "password": "imintcs3",
+        #     "password2": "imintcs3",
+        #     "name": "Demo7 User",
+        #     'winner': random.choice(teams),
+        # },
+        # {
+        #     "email": "demouser8@gmail.com",
+        #     "password": "imintcs3",
+        #     "password2": "imintcs3",
+        #     "name": "Demo8 User",
+        #     'winner': random.choice(teams),
+        # },
+        # {
+        #     "email": "demouser9@gmail.com",
+        #     "password": "imintcs3",
+        #     "password2": "imintcs3",
+        #     "name": "Demo9 User",
+        #     'winner': random.choice(teams),
+        # },
         {
             "email": "praveenphatak@gmail.com",
             "password": "imintcs3",
@@ -383,26 +444,115 @@ def create_users():
         .update(ipl_admin=True)
 
 
+def update_super(result):
+    match = result.match
+    match.bat_first = random.choice(match.teams)
+    match.team1_overs = match.team2_overs = 20
+    match.team1_score = match.team2_score
+    match.save()
+
+
+def update_runs(result):
+    match = result.match
+    t1runs, t1wickets = match.team1_score.split('/')
+    t2runs, t2wickets = match.team2_score.split('/')
+    if result.winner == match.team1:
+        print(match.team1.short_name, 'is winner')
+        match.bat_first = match.team1
+        t1runs = int(t2runs) + random.randint(1, 20)
+        match.t1_overs = 20
+        t2overs = random.choice(
+            [19, 19.1, 19.2, 19.3, 19.4, 19.5, 20])
+        match.t2_overs = t2overs
+        t2wickets = 10 if t2overs < 20 else t2wickets
+        match.t2_score = f"{t2runs}/{t2wickets}"
+        match.t1_score = f"{t1runs}/{t1wickets}"
+        result.win_margin = t1runs - int(t2runs)
+    else:
+        print(match.team2.short_name, 'is winner')
+        match.bat_first = match.team2
+        t2runs = int(t1runs) + random.randint(1, 20)
+        match.t2_overs = 20
+        t1overs = random.choice(
+            [19, 19.1, 19.2, 19.3, 19.4, 19.5, 20])
+        match.t1_overs = t1overs
+        t1wickets = 10 if t1overs < 20 else t1wickets
+        match.t2_score = f"{t2runs}/{t2wickets}"
+        match.t1_score = f"{t1runs}/{t1wickets}"
+        result.win_margin = t2runs - int(t1runs)
+    result.save()
+    match.save()
+
+
+def update_wickets(result):
+    match = result.match
+    t1runs, t1wickets = match.team1_score.split('/')
+    t2runs, t2wickets = match.team2_score.split('/')
+    if result.winner == match.team1:
+        print(match.team1.short_name, 'is winner by wickets')
+        match.bat_first = match.team2
+        match.t2_overs = 20
+        match.t1_overs = random.randint(17, 20)
+        t1runs = int(t2runs) + 1
+        t1wickets = 10-int(t1wickets)
+        match.t1_score = f"{t1runs}/{t1wickets}"
+        result.win_margin = 10-t1wickets
+    else:
+        print(match.team2.short_name, 'is winner by wickets')
+        match.bat_first = match.team1
+        match.t1_overs = 20
+        match.t2_overs = random.randint(17, 20)
+        t2runs = int(t1runs) + 1
+        t2wickets = 10-int(t2wickets)
+        match.t2_score = f"{t2runs}/{t2wickets}"
+        result.win_margin = 10-t2wickets
+    result.save()
+    match.save()
+
+
 def load_predictions():
+    from apimatches.helpers import (add_default_bets, insert_to_history,
+                                    settle_bets, update_teams)
+
     Prediction.objects.filter(ipl_winner=False).delete()
 
     objs = []
-    matches = Match.objects.all()
-    for user in get_user_model().objects.filter(is_staff=False):
-        for match in matches:
-            teams = Team.objects.filter(Q(short_name=match.team1.short_name) |
-                                        Q(short_name=match.team2.short_name))
-            objs.append(Prediction(user=user, match=match,
+    results = MatchResult.objects.all()
+    for result in results:
+        if result.status == "completed":
+            if result.win_type == 'super':
+                update_super(result)
+            elif result.win_type == 'runs':
+                update_runs(result)
+            else:
+                update_wickets(result)
+        elif result.status == 'abandoned':
+            match = result.match
+            match.bat_first = match.team2 if match.team2_overs == 20 else match.team1
+            match.save()
+
+        for user in get_user_model().objects.filter(is_staff=False):
+            teams = Team.objects.filter(Q(short_name=result.match.team1.short_name) |
+                                        Q(short_name=result.match.team2.short_name))
+            objs.append(Prediction(user=user, match=result.match,
                                    team=random.choice(list(teams)),
-                                   amount=random.randint(match.min_bet, match.min_bet+25)))
+                                   amount=random.randint(result.match.min_bet, result.match.min_bet+25)))
     Prediction.objects.bulk_create(objs)
 
-    for match in matches:
-        matchPreds = Prediction.objects.filter(match=match)
-        randPred = matchPreds[random.randint(0, matchPreds.count()-1)]
+    for i in range(20):
+        preds = Prediction.objects.all()
+        randPred = preds[random.randint(0, preds.count()-1)]
         Prediction.objects.filter(id=randPred.id).delete()
 
     print("Predictions uploaded")
+
+    for result in MatchResult.objects.exclude(status='scheduled'):
+        add_default_bets(result.match)
+        settle_bets(result)
+        insert_to_history(result)
+        if result.match.type == settings.MATCH_TYPES[0][0]:
+            update_teams(result)
+    print('Updated Results')
 
 
 if __name__ == '__main__':
@@ -421,4 +571,4 @@ if __name__ == '__main__':
     load_matches()
     load_history()
     create_users()
-    load_predictions()
+    # load_predictions()

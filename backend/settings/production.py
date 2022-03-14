@@ -5,6 +5,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 try:
     from .local import *
 except ImportError:
+    print('Pointing to Prod')
     # Production Settings goes here
     import dj_database_url
     import django_heroku

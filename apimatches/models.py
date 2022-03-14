@@ -47,18 +47,6 @@ class Match(models.Model):
         verbose_name_plural = 'Matches'
 
     @property
-    def is_scheduled(self):
-        return self.status == 'scheduled'
-
-    @property
-    def is_completed(self):
-        return self.status == 'completed'
-
-    @property
-    def is_abandoned(self):
-        return self.status == 'abandoned'
-
-    @property
     def entry_cutoff_passed(self):
         return timezone.localtime() >= self.date - timedelta(minutes=30)
 
@@ -91,3 +79,15 @@ class MatchResult(models.Model):
 
     class Meta:
         ordering = ('match',)
+
+    @property
+    def is_scheduled(self):
+        return self.status == 'scheduled'
+
+    @property
+    def is_completed(self):
+        return self.status == 'completed'
+
+    @property
+    def is_abandoned(self):
+        return self.status == 'abandoned'

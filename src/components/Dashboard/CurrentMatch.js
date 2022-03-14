@@ -1,0 +1,86 @@
+import React from "react";
+import { Button, Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { MotionDiv, PredictionForm } from "..";
+import { formattedDate, formattedTime, matchCutoffPassed } from "../../helpers";
+import { useModal } from "../../hooks";
+import { CurrMatchTeam } from "./CurrMatchTeam";
+
+export function CurrentMatch({ match }) {
+  const navigate = useNavigate();
+  const { team1, team2, type, num, venue, date, slug } = match.match;
+  const { winner, win_margin, win_type } = match;
+  const { team1_score, team2_score, team1_overs, team2_overs } = match.match;
+
+  const { setShow, modal } = useModal(
+    <PredictionForm match={match} />,
+    "Match Prediction"
+  );
+
+  if (!match) return null;
+
+  return (
+    <Card
+      className="curr-match"
+      style={{
+        background: `url(${process.env.REACT_APP_STATIC_URL}/result.jpg) no-repeat center center/cover`,
+      }}
+    >
+      {modal}
+      <MotionDiv className="match-venue">
+        <span className="match-num">
+          {type === "league"
+            ? "Match " + num + ", " + venue
+            : type + ", " + venue}
+        </span>
+        <br />
+        <span className="match-date">
+          {formattedDate(date) + " " + formattedTime(date)}
+        </span>
+        <hr />
+      </MotionDiv>
+      <h5 className="match-status">
+        {winner
+          ? winner.long_name + " won by " + win_margin + " " + win_type
+          : matchCutoffPassed(date)
+          ? "Match In Progress"
+          : "Match Yet to Begin"}
+      </h5>
+      <CurrMatchTeam
+        klass="teamL"
+        team={team1}
+        winner={winner}
+        score={team1_score}
+        overs={team1_overs}
+      />
+
+      <h3 className="vs">VS</h3>
+
+      <CurrMatchTeam
+        klass="teamR"
+        team={team2}
+        winner={winner}
+        score={team2_score}
+        overs={team2_overs}
+      />
+      <div className="match-btns">
+        <Button
+          className="match-btn"
+          variant="warning"
+          onClick={() => navigate(`/stats/${slug}`)}
+        >
+          Match Detail
+        </Button>
+        {!matchCutoffPassed(date) && (
+          <Button
+            className="match-btn"
+            variant="warning"
+            onClick={() => setShow(true)}
+          >
+            Predict Now
+          </Button>
+        )}
+      </div>
+    </Card>
+  );
+}

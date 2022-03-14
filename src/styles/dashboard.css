@@ -1,0 +1,489 @@
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "profile current current results"
+        "players team predictions results";
+    padding: 2rem 1rem;
+    column-gap: 1rem;
+    row-gap: 2rem;
+    /* background: url(../images/scheduleBg.jpg) no-repeat center center/cover; */
+}
+
+.dashboard .card-title {
+    color: #1b3d88;
+    margin-bottom: 1rem;
+}
+
+/*----------------------
+Player Standings
+-----------------------*/
+.dash-player-standings {
+    grid-area: players;
+}
+
+.dash-player-standings .amount {
+    text-align: right;
+}
+
+.dash-player-standings td.name {
+    text-transform: capitalize;
+}
+
+.dash-player-standings .badge img {
+    width: 30px;
+}
+
+/*----------------------
+Results & Fixtures
+-----------------------*/
+.results-fixtures {
+    grid-area: results;
+}
+
+.results-fixtures .dash-match {
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+
+.results-fixtures .dash-match.current {
+    border: 2px solid #1b3d89;
+    box-shadow: 0 6px 0 #1a3373;
+}
+
+.results-fixtures .dash-match.dark {
+    background: linear-gradient(180deg, #959595 0%, #989898 100%);
+}
+
+.results-fixtures .dash-match:hover {
+    filter: brightness(50%);
+}
+
+.results-fixtures .dash-match .card-title {
+    text-transform: capitalize;
+    color: #c0bbbb;
+    text-align: center;
+    /* padding: 0.25rem; */
+}
+
+.results-fixtures .dash-match .card-title strong {
+    /* color: var(--bs-danger); */
+    font-size: 0.9rem;
+}
+
+.results-fixtures .dash-match:not(.future) .card-title strong {
+    /* color: #101010; */
+}
+
+.results-fixtures .dash-match .card-title small {
+    font-size: 0.8rem;
+    /* color: #000; */
+}
+
+.results-fixtures .dash-match.future .card-title small {
+    /* color: #383838; */
+}
+
+.dash-match .result {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #000;
+}
+
+.dash-match .result span.long {
+    display: none;
+}
+
+.dash-match-detail {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.dash-match-detail img {
+    width: 40px;
+}
+
+.dash-match-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dash-match .prediction {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #383838;
+    padding: 0.25rem 0;
+}
+
+
+.dash-match .prediction span {
+    text-transform: capitalize;
+}
+
+
+/*----------------------
+UserPredictions
+-----------------------*/
+.user-predictions {
+    grid-area: predictions;
+}
+
+.user-predictions tbody tr {
+    cursor: pointer;
+}
+
+.user-predictions tbody tr:hover {
+    background-color: aquamarine !important;
+}
+
+.user-predictions th.amount,
+.user-predictions td.amount {
+    text-align: right;
+}
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.pagination button {
+    margin: auto;
+}
+
+/*----------------------
+Team Standings
+-----------------------*/
+.dash-team-standings {
+    grid-area: team;
+}
+
+.standings thead {
+    background: linear-gradient(92.04deg, #18184a 24.18%, #19398a 50.95%, #18184a 110.32%);
+    box-shadow: 0 4px 8px 0 hsl(0deg 0% 7% / 50%);
+    color: white;
+    font-weight: 600;
+}
+
+.standings td.team img {
+    width: 30px;
+}
+
+.dash-team-standings .nrr {
+    text-align: right;
+}
+
+.standings tr td {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+
+/*----------------------
+Current Match
+-----------------------*/
+
+.curr-match {
+    grid-area: current;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: "venue venue venue"
+        "result result result"
+        "team1 vs team2";
+    column-gap: 1rem;
+    row-gap: 0.5rem;
+    /* background: url(../images/result.jpg) no-repeat center center/cover; */
+    color: white;
+    padding: 1rem;
+    position: relative;
+}
+
+.curr-match .match-venue {
+    grid-area: venue;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.curr-match .match-venue .match-date {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #989898;
+}
+
+.curr-match .match-status {
+    grid-area: result;
+    text-align: center;
+}
+
+.curr-match .match-team {
+    position: relative;
+}
+
+.curr-match .match-btns {
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.curr-match .match-btns button {
+    width: max-content;
+}
+
+
+
+.curr-match .match-team.teamL {
+    grid-area: team1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "logo desc";
+}
+
+.curr-match .match-teamlogo {
+    grid-area: logo;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.match-teamlogo img {
+    grid-area: img;
+    width: 70px;
+}
+
+.match-teamlogo span {
+    grid-area: name;
+}
+
+.match-teamlogo span.long {
+    display: none;
+}
+
+.curr-match .vs {
+    grid-area: vs;
+    margin: auto;
+    color: var(--bs-danger);
+    font-weight: 900;
+}
+
+.match-team.teamR {
+    grid-area: team2;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "desc logo";
+}
+
+.match-score {
+    grid-area: desc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.match-team.teamL .match-score {
+    align-items: flex-end;
+}
+
+.match-team.teamR .match-score {
+    align-items: flex-start;
+}
+
+
+
+.match-score.loser {
+    color: #989898;
+}
+
+
+@media screen and (max-width:500px) {
+
+    .curr-match {
+        padding-bottom: 3rem;
+    }
+
+    .match-teamlogo img {
+        width: 50px;
+    }
+}
+
+/*----------------------
+Profile
+-----------------------*/
+.profile {
+    grid-area: profile;
+    border-radius: 10px;
+}
+
+
+
+.profile .card-body {
+    position: relative;
+    background-color: #f3f3f3;
+    color: #000;
+
+}
+
+.profile .card-title {
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.profile .profileImg {
+    position: absolute;
+    width: 2.5rem;
+    left: 50%;
+    transform: translate(-50%, -100%);
+}
+
+.profile .rank {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #383838;
+}
+
+.profile .rank h1 {
+    font-weight: 900;
+}
+
+.profile .stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 1rem 0;
+}
+
+.profile .circle {
+    position: relative;
+    display: inline-block;
+    width: 6.5rem;
+    height: 6.5rem;
+    border-radius: 50%;
+    border: 0.8rem solid gray;
+    box-shadow: inset 0 0 7px grey;
+    text-align: center;
+}
+
+.profile .label {
+    position: absolute;
+    bottom: -2.5rem;
+    width: 120%;
+    margin-left: -10%;
+    font-size: 1rem;
+}
+
+.profile .amount {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.profile .circle.less-25 {
+    border-top-color: #068602;
+    border-right-color: #cf0808;
+    border-left-color: #cf0808;
+    border-bottom-color: #cf0808;
+}
+
+.profile .circle.less-50 {
+    border-top-color: #068602;
+    border-right-color: #cf0808;
+    border-left-color: #068602;
+    border-bottom-color: #cf0808;
+}
+
+.profile .circle.less-75 {
+    border-top-color: #068602;
+    border-right-color: #068602;
+    border-left-color: #068602;
+    border-bottom-color: #cf0808;
+}
+
+.profile .circle.none {
+    border-color: #cf0808;
+}
+
+.profile .circle.all {
+    border-color: #068602;
+}
+
+.profile .amount h1 {
+    font-weight: 900;
+}
+
+.profile .pred-bar-container {
+    width: 100%;
+}
+
+.profile .pred-bar {
+    color: #fff;
+}
+
+
+
+
+@media screen and (max-width: 991px) {
+    .dashboard {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto auto auto 1fr;
+        grid-template-areas: "profile current"
+            "players predictions"
+            "results predictions"
+            "results team";
+        padding: 2rem 1rem;
+        column-gap: 1rem;
+        row-gap: 2rem;
+        /* background: url(../images/scheduleBg.jpg) no-repeat center center/cover; */
+    }
+
+    .curr-match {
+        gap: 0.5rem;
+    }
+}
+
+
+@media screen and (max-width: 728px) {
+    .dashboard {
+        /* grid-template-columns: 2fr 3fr;
+        grid-template-rows: auto auto auto 1fr;
+        grid-template-areas: "profile players"
+            "current current"
+            "predictions predictions"
+            "team results"; */
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(6, auto);
+        grid-template-areas: "profile"
+            "players"
+            "predictions"
+            "current"
+            "results"
+            "team";
+        padding: 2rem 1rem;
+        column-gap: 0.5rem;
+        row-gap: 2rem;
+        /* background: url(../images/scheduleBg.jpg) no-repeat center center/cover; */
+    }
+
+
+    .curr-match {
+        gap: 0.5rem;
+    }
+}
+
+@media screen and (max-width:390px) {
+    .user-predictions tr th:first-child {
+        display: none;
+    }
+
+}

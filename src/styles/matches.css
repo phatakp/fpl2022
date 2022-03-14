@@ -1,0 +1,391 @@
+/* ----------------
+Main Matches Page 
+--------------------*/
+.matches {
+    position: relative;
+    padding: 3rem 1rem;
+    /* background: url(../images/scheduleBg.jpg) no-repeat center center/cover; */
+    min-height: 100vh;
+}
+
+.matches__wrapper {
+    max-width: 1400px;
+    margin: auto;
+}
+
+.filter__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+
+.match-filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #0a58ca;
+    border-radius: 5px;
+}
+
+
+/* ----------------
+Team Filter Modal 
+--------------------*/
+
+.team-filter {
+    color: var(--bs-danger);
+}
+
+.team-filter svg {
+    cursor: pointer;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.team-filter-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+button.all {
+    grid-column: 2/-1;
+}
+
+button[type="submit"] {
+    grid-column: 1/-1;
+}
+
+/* ----------------
+Match List Section 
+--------------------*/
+
+.matches__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ----------------
+Individual Match Row
+--------------------*/
+
+.match {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 4fr 2fr 2fr;
+    grid-template-areas: "prediction prediction prediction"
+        "teams result desc";
+    background: white;
+    box-shadow: 0 5px 10px rgb(0 57 111 / 15%);
+    border-radius: 10px;
+    padding: 2rem 0;
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+}
+
+.match {
+    border: 2px solid #1b3d89;
+    background: #f4f7ff;
+    box-shadow: 0 6px 0 #1a3373;
+}
+
+
+/* ----------------
+Match Row Teams
+--------------------*/
+
+.match__teams {
+    grid-area: teams;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    align-items: center;
+    border-right: 2px solid rgba(123, 123, 123, .15);
+    padding: 1rem;
+}
+
+.match__team {
+    display: grid;
+    align-items: center;
+}
+
+.match__team.team1 {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "img info";
+}
+
+.match__team.team2 {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "info img";
+}
+
+.match__team img {
+    grid-area: img;
+    width: 100px;
+}
+
+.match__team_info {
+    grid-area: info;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.match__team.team1 .match__team_info {
+    text-align: right;
+}
+
+.match__team.team2 .match__team_info {
+    text-align: left;
+}
+
+.match__team_info span {
+    font-weight: 600;
+}
+
+.match__team_info span.short {
+    display: none;
+}
+
+.match__team_info h4 {
+    color: #19398A;
+    font-weight: 600;
+}
+
+.match__team_info small {
+    color: #929292;
+    font-weight: 700;
+}
+
+
+.versus {
+    font-weight: 700;
+    color: #929292;
+}
+
+/* ----------------
+Match Row Result
+--------------------*/
+
+.match__result {
+    grid-area: result;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-right: 2px solid rgba(123, 123, 123, .15);
+    height: 100%;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.match__result .result {
+    color: #19398A;
+
+}
+
+.match__result .result span {
+    font-weight: 900;
+}
+
+.match__result .result span.short {
+    display: none;
+}
+
+
+/* ----------------
+Match Row Venue
+--------------------*/
+
+.match__venue {
+    grid-area: desc;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: "date"
+        "number"
+        "venue";
+    height: 100%;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.match__date {
+    grid-area: date;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.match__num {
+    grid-area: number;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.match__num span {
+    color: var(--bs-danger);
+    font-weight: 700;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+
+.venue {
+    grid-area: venue;
+    font-size: 0.8rem;
+}
+
+/* ----------------
+Responsive
+--------------------*/
+@media screen and (max-width:1100px) {
+    .match__team img {
+        width: 90px;
+    }
+}
+
+@media screen and (max-width:991px) {
+    .match {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+        grid-template-areas: "prediction"
+            "desc"
+            "teams"
+            "result";
+        padding: 1rem;
+    }
+
+    .match__teams {
+        border-bottom: 2px solid rgba(123, 123, 123, .15);
+        border-right: none;
+        padding: 1rem;
+    }
+
+    .match__team img {
+        width: 100px;
+    }
+
+
+    .match__result {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        border-bottom: 2px solid rgba(123, 123, 123, .15);
+        border-right: none;
+        padding: 1rem 0.5rem;
+        gap: 10rem;
+    }
+
+    .match__result.winner {
+        grid-template-columns: 1fr auto;
+        gap: 0.5rem;
+    }
+
+
+    .match__result .result {
+        text-align: left;
+        font-size: 0.85rem;
+    }
+
+
+    .match__venue {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas: "number venue"
+            "date venue";
+        padding: 1rem;
+        padding-top: 0;
+        border-bottom: 2px solid rgba(123, 123, 123, .15);
+        text-align: left;
+    }
+
+    .venue {
+        text-align: right;
+    }
+
+    .match__num {
+        justify-content: flex-start;
+    }
+}
+
+@media screen and (max-width: 610px) {
+
+    .match__teams {
+        column-gap: 3rem;
+    }
+
+    .match__team img {
+        width: 80px;
+    }
+
+    .match__team_info span.short {
+        display: grid;
+    }
+
+
+    .match__team_info span.long {
+        display: none;
+    }
+
+
+    .match__result .result span.short {
+        display: inline;
+    }
+
+    .match__result .result span.long {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 543px) {
+
+    .match__teams {
+        gap: 1rem;
+    }
+
+    .match__team_info h4 {
+        margin-bottom: 0;
+    }
+
+    .match__result {
+        gap: 0.5rem;
+    }
+
+    .match__venue {
+        grid-template-columns: 1fr;
+        grid-template-areas: "number"
+            "date"
+            "venue";
+    }
+
+    .venue {
+        text-align: left;
+    }
+}
+
+@media screen and (max-width: 443px) {
+
+    .match__team.team1,
+    .match__team.team2 {
+        grid-template-columns: 1fr;
+        grid-template-areas: "img"
+            "info";
+        text-align: center;
+    }
+
+    .match__team img {
+        margin: auto;
+    }
+
+    .match__team.team1 .match__team_info,
+    .match__team.team2 .match__team_info {
+        text-align: center;
+    }
+
+}

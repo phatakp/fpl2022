@@ -1,13 +1,200 @@
-body {
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: "Karla", sans-serif;
+}
+
+.shiz-font {
+  font-family: 'Shizuru', cursive;
+}
+
+.card {
+  box-shadow: 0 5px 10px rgb(0 57 111 / 15%);
+}
+
+.logo {
+  max-width: 5rem;
+  margin-right: .5rem;
+}
+
+.modal-header {
+  background: linear-gradient(92.04deg, #18184a 24.18%, #19398a 50.95%, #18184a 110.32%);
+  box-shadow: 0 4px 8px 0 hsl(0deg 0% 7% / 50%);
+  color: white;
+}
+
+.modal-header .btn-close {
+  background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+
+.alert-success {
+  background-color: var(--bs-success) !important;
+  color: #fff !important;
+}
+
+.alert-danger {
+  background-color: var(--bs-danger) !important;
+  color: #fff !important;
+}
+
+
+
+.prediction-form .teamOptions {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+}
+
+.prediction-form .form-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #001D48;
+  margin-right: 1rem;
+}
+
+.prediction-form .teamOptions .team-logoName {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prediction-form .teamOptions .team-logoName.team1 {
+  flex-direction: row-reverse;
+  margin-right: 1rem;
+}
+
+.prediction-form .teamOptions .team-logoName.team2 {
+  flex-direction: row;
+}
+
+.prediction-form .teamOptions img {
+  width: 40px;
+}
+
+.prediction-form .teamOptions span.long {
+  display: none;
+}
+
+.prediction-form button[type='submit'] {
+  margin: auto;
+}
+
+.SRH {
+  background: linear-gradient(180deg, #F26522 0%, #ED1A37 100%);
+  border: 2px solid #ED1A37;
+  color: #fff;
+}
+
+.RCB {
+  background: linear-gradient(180deg, #6A6A6A 0%, #1C1C1C 100%);
+  border: 2px solid #1C1C1C;
+  color: #fff;
+}
+
+.RR {
+  background: linear-gradient(180deg, #EA1A85 0%, #001D48 100%);
+  border: 2px solid #001D48;
+  color: #fff;
+}
+
+.PBKS {
+  background: linear-gradient(180deg, #D71920 0%, #84171B 100%);
+  border: 2px solid #84171B;
+  color: #fff;
+}
+
+.MI {
+  background: linear-gradient(180deg, #006CB7 0%, #003B7A 100%);
+  border: 2px solid #003B7A;
+  color: #fff;
+}
+
+.KKR {
+  background: linear-gradient(180deg, #3B215D 0%, #552792 100%);
+  border: 2px solid #552792;
+  color: #fff;
+}
+
+.DC {
+  background: linear-gradient(180deg, #0078BC 0%, #17479E 100%);
+  border: 2px solid #17479E;
+  color: #fff;
+}
+
+.CSK {
+  background: linear-gradient(180deg, #F25C19 0%, #FCCA06 100%);
+  border: 2px solid #F25C19;
+  color: #fff;
+}
+
+.GT {
+  background: linear-gradient(180deg, #315079 0%, #102949 100%);
+  border: 2px solid #102949;
+  color: #fff;
+}
+
+.LSG {
+  background: linear-gradient(180deg, #A72056 0%, #FFCC00 100%);
+  border: 2px solid #FFCC00;
+  color: #fff;
+}
+
+
+.SRH-color {
+  color: orange !important;
+}
+
+.RCB-color {
+  color: aquamarine !important;
+}
+
+.RR-color {
+  color: #001D48 !important;
+}
+
+.PBKS-color {
+  color: #fcfcfc !important;
+}
+
+.MI-color {
+  color: #eebc19 !important;
+}
+
+.KKR-color {
+  color: gold !important;
+}
+
+.DC-color {
+  color: darkred !important;
+}
+
+.CSK-color {
+  color: #003B7A !important;
+}
+
+.GT-color {
+  color: goldenrod !important;
+}
+
+.LSG-color {
+  color: #003B7A !important;
+}
+
+.not-found {
+  background: linear-gradient(92.04deg, #18184a 24.18%, #19398a 50.95%, #18184a 110.32%);
+  padding: 10rem 3rem;
+  color: #fff;
+  text-align: center;
+}
+
+.not-found button {
+  margin-top: 2rem;
+}
+
+.invalid-feedback {
+  display: block;
 }
