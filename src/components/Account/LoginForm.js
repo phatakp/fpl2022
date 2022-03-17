@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { MotionDiv } from "../MotionDiv";
 
 export function LoginForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(location?.state?.mail || "");
+  const [password, setPassword] = useState(location?.state?.pass || "");
   const [error, setError] = useState("");
 
   const formSubmit = async (e) => {

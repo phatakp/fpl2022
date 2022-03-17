@@ -31,7 +31,7 @@ export function RegisterForm() {
         iplWinner
       );
       if (resp.status === 201) {
-        navigate("/login");
+        navigate("/login", { state: { mail: inp_email, pass: password } });
       }
     } catch (err) {
       console.log(err.response);
