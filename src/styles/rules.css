@@ -1,0 +1,49 @@
+.rules {
+    padding: 3rem 0;
+}
+
+.rules h2 {
+    font-weight: 800;
+    color: crimson;
+}
+
+.rules h4 {
+    margin-top: 2rem;
+    text-decoration: underline;
+    color: blueviolet;
+}
+
+.rules h5 {
+    margin-top: 1rem;
+    color: darkslateblue;
+}
+
+.rules li {
+    line-height: 2rem;
+}
+
+.rules ol li {
+    margin-top: 0.5rem;
+}
+
+.rules .imp {
+    font-weight: 600;
+}
+
+.rules tbody {
+    position: relative;
+}
+
+.rules tbody tr:first-child td.name::before {
+    content: 'D';
+    text-align: center;
+    border-radius: 100%;
+    background-color: green;
+    color: #fff;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+    position: absolute;
+    left: -2rem;
+    transform: rotate(-20deg);
+}

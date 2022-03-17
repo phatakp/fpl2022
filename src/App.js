@@ -1,6 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import { NavBar } from "./components";
-import { Account, Dashboard, Home, Match, Matches, NotFound } from "./pages";
+import {
+  Account,
+  Dashboard,
+  Home,
+  Match,
+  Matches,
+  NotFound,
+  Rules,
+} from "./pages";
 import { AuthContextProvider } from "./store/context/authContext";
 import { DataContextProvider } from "./store/context/dataContext";
 
@@ -11,6 +19,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/game-rules" element={<Rules />} />
           <Route path="/login" element={<Account page="Login" />} />
           <Route path="/register" element={<Account page="Register" />} />
           <Route path="/chg-password" element={<Account page="ChgPwd" />} />

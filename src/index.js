@@ -10,6 +10,7 @@ import "./styles/loader.css";
 import "./styles/match.css";
 import "./styles/matches.css";
 import "./styles/navbar.css";
+import "./styles/rules.css";
 
 ReactDOM.render(
   <React.StrictMode>

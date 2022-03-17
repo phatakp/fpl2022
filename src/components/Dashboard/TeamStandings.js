@@ -1,14 +1,15 @@
 import { Card, Image, Table } from "react-bootstrap";
 import { Loader } from "..";
-import { fetchStandings } from "../../api";
-import { teamLogo } from "../../helpers";
+import { fetchResults, fetchStandings } from "../../api";
+import { getTeamMatches, teamLogo } from "../../helpers";
 import { useAPIData } from "../../hooks";
 import { MotionDiv } from "../MotionDiv";
 
 export function TeamStandings() {
   const { data: standings, isLoading } = useAPIData(fetchStandings);
+  const { data: matches, isLoading: loading } = useAPIData(fetchResults);
 
-  if (isLoading) return <Loader />;
+  if (isLoading || loading) return <Loader />;
   standings
     .sort((a, b) => (b._nrr > a._nrr ? 1 : -1))
     .sort((a, b) => b.points - a.points)
@@ -21,11 +22,9 @@ export function TeamStandings() {
           <thead>
             <tr>
               <th>Team</th>
-              <th>P</th>
-              <th>W</th>
-              <th>L</th>
-              <th>Pts</th>
+              <th className="amount">Pts</th>
               <th className="nrr">NRR</th>
+              {matches.length > 0 && <th className="form">Form</th>}
             </tr>
           </thead>
           <tbody>
@@ -37,16 +36,7 @@ export function TeamStandings() {
                       <Image src={teamLogo(item.team)} />
                     </MotionDiv>
                   </td>
-                  <td>
-                    <MotionDiv>{item.played}</MotionDiv>
-                  </td>
-                  <td>
-                    <MotionDiv>{item.won}</MotionDiv>
-                  </td>
-                  <td>
-                    <MotionDiv>{item.lost}</MotionDiv>
-                  </td>
-                  <td>
+                  <td className="amount">
                     <MotionDiv>{item.points}</MotionDiv>
                   </td>
 
@@ -64,6 +54,33 @@ export function TeamStandings() {
                       {item._nrr.toFixed(3)}
                     </MotionDiv>
                   </td>
+
+                  {matches.length > 0 && (
+                    <td className="form">
+                      <MotionDiv>
+                        {getTeamMatches(matches, item.team, 3, true).map(
+                          (res) => (
+                            <span
+                              key={res.match.num}
+                              className={
+                                item.team === res.winner?.short_name
+                                  ? "won"
+                                  : res.winner
+                                  ? "lost"
+                                  : ""
+                              }
+                            >
+                              {item.team === res.winner?.short_name
+                                ? "W"
+                                : res.winner
+                                ? "L"
+                                : "-"}
+                            </span>
+                          )
+                        )}
+                      </MotionDiv>
+                    </td>
+                  )}
                 </tr>
               ))}
           </tbody>

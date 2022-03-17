@@ -11,6 +11,7 @@ export const authState = {
   amount: 0.0,
   ipl_admin: false,
   ipl_winner: null,
+  doubles: 0,
 };
 
 export const initDataState = {

@@ -55,7 +55,7 @@ export function MatchPredictions({ match }) {
             <tbody>
               {bets &&
                 bets.map((bet) => (
-                  <tr key={bet.id}>
+                  <tr key={bet.id} className={bet.double ? "double" : ""}>
                     <td className="name">{bet.user.name}</td>
                     <td className="team">
                       {bet?.team?.short_name ? (

@@ -359,69 +359,69 @@ def create_users():
         active=True).values_list('short_name', flat=True)
     headers = {'content-type': 'application/json'}
     params = [
-        # {
-        #     "email": "demouser@gmail.com",
-        #     "password": "imintcs3",
-        #     "password2": "imintcs3",
-        #     "name": "Demo1 User",
-        #     'winner': random.choice(teams),
-        # },
-        # {
-        #     "email": "demouser2@gmail.com",
-        #     "password": "imintcs3",
-        #     "password2": "imintcs3",
-        #     "name": "Demo2 User",
-        #     'winner': random.choice(teams),
-        # },
-        # {
-        #     "email": "demouser3@gmail.com",
-        #     "password": "imintcs3",
-        #     "password2": "imintcs3",
-        #     "name": "Demo3 User",
-        #     'winner': random.choice(teams),
-        # },
-        # {
-        #     "email": "demouser4@gmail.com",
-        #     "password": "imintcs3",
-        #     "password2": "imintcs3",
-        #     "name": "Demo4 User",
-        #     'winner': random.choice(teams),
-        # },
-        # {
-        #     "email": "demouser5@gmail.com",
-        #     "password": "imintcs3",
-        #     "password2": "imintcs3",
-        #     "name": "Demo5 User",
-        #     'winner': random.choice(teams),
-        # },
-        # {
-        #     "email": "demouser6@gmail.com",
-        #     "password": "imintcs3",
-        #     "password2": "imintcs3",
-        #     "name": "Demo6 User",
-        #     'winner': random.choice(teams),
-        # },
-        # {
-        #     "email": "demouser7@gmail.com",
-        #     "password": "imintcs3",
-        #     "password2": "imintcs3",
-        #     "name": "Demo7 User",
-        #     'winner': random.choice(teams),
-        # },
-        # {
-        #     "email": "demouser8@gmail.com",
-        #     "password": "imintcs3",
-        #     "password2": "imintcs3",
-        #     "name": "Demo8 User",
-        #     'winner': random.choice(teams),
-        # },
-        # {
-        #     "email": "demouser9@gmail.com",
-        #     "password": "imintcs3",
-        #     "password2": "imintcs3",
-        #     "name": "Demo9 User",
-        #     'winner': random.choice(teams),
-        # },
+        {
+            "email": "demouser@gmail.com",
+            "password": "imintcs3",
+            "password2": "imintcs3",
+            "name": "Demo1 User",
+            'winner': random.choice(teams),
+        },
+        {
+            "email": "demouser2@gmail.com",
+            "password": "imintcs3",
+            "password2": "imintcs3",
+            "name": "Demo2 User",
+            'winner': random.choice(teams),
+        },
+        {
+            "email": "demouser3@gmail.com",
+            "password": "imintcs3",
+            "password2": "imintcs3",
+            "name": "Demo3 User",
+            'winner': random.choice(teams),
+        },
+        {
+            "email": "demouser4@gmail.com",
+            "password": "imintcs3",
+            "password2": "imintcs3",
+            "name": "Demo4 User",
+            'winner': random.choice(teams),
+        },
+        {
+            "email": "demouser5@gmail.com",
+            "password": "imintcs3",
+            "password2": "imintcs3",
+            "name": "Demo5 User",
+            'winner': random.choice(teams),
+        },
+        {
+            "email": "demouser6@gmail.com",
+            "password": "imintcs3",
+            "password2": "imintcs3",
+            "name": "Demo6 User",
+            'winner': random.choice(teams),
+        },
+        {
+            "email": "demouser7@gmail.com",
+            "password": "imintcs3",
+            "password2": "imintcs3",
+            "name": "Demo7 User",
+            'winner': random.choice(teams),
+        },
+        {
+            "email": "demouser8@gmail.com",
+            "password": "imintcs3",
+            "password2": "imintcs3",
+            "name": "Demo8 User",
+            'winner': random.choice(teams),
+        },
+        {
+            "email": "demouser9@gmail.com",
+            "password": "imintcs3",
+            "password2": "imintcs3",
+            "name": "Demo9 User",
+            'winner': random.choice(teams),
+        },
         {
             "email": "praveenphatak@gmail.com",
             "password": "imintcs3",
@@ -536,7 +536,10 @@ def load_predictions():
                                         Q(short_name=result.match.team2.short_name))
             objs.append(Prediction(user=user, match=result.match,
                                    team=random.choice(list(teams)),
-                                   amount=random.randint(result.match.min_bet, result.match.min_bet+25)))
+                                   amount=random.choice(
+                                       range(result.match.min_bet, result.match.min_bet+20, 10))
+                                   )
+                        )
     Prediction.objects.bulk_create(objs)
 
     for i in range(20):

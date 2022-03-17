@@ -34,8 +34,9 @@ class Match(models.Model):
     team2_score = models.CharField(max_length=10,
                                    validators=[score_validator, ],
                                    blank=True, null=True)
-    team1_overs = models.FloatField(default=20, blank=True, null=True)
-    team2_overs = models.FloatField(default=20, blank=True, null=True)
+    team1_overs = models.FloatField(blank=True, null=True)
+    team2_overs = models.FloatField(blank=True, null=True)
+    double = models.BooleanField(default=False)
 
     objects = MatchManager()
 
@@ -48,7 +49,11 @@ class Match(models.Model):
 
     @property
     def entry_cutoff_passed(self):
-        return timezone.localtime() >= self.date - timedelta(minutes=30)
+        return timezone.localtime() >= self.date - timedelta(minutes=60)
+
+    @property
+    def double_cutoff_passed(self):
+        return timezone.localtime() >= self.date + timedelta(minutes=60)
 
     @property
     def is_started(self):

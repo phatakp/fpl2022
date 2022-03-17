@@ -43,6 +43,19 @@ def settle_bets(result):
     else:
         update_abandoned(match_bets)
 
+    # Double bet present
+    if result.match.double:
+        double_bet = match_bets.filter(double=True).first()
+        total = 0
+        if double_bet.status == settings.PREDICTION_STATUS_TYPES[2][0]:
+            for instance in match_bets.filter(status=settings.PREDICTION_STATUS_TYPES[3][0]):
+                print(instance.user.name, instance.amount)
+                update_prediction(instance, instance.amount, win=False,
+                                  final=False, double=True)
+                total += instance.amount
+            update_prediction(double_bet, total, win=True,
+                              final=False, double=True)
+
     if result.match.type == 'final':
         final_bets = ipl_final_bets()
 
@@ -52,15 +65,15 @@ def settle_bets(result):
             update_abandoned(final_bets, final=True)
 
 
-def update_user(instance, amt, win=True, final=False):
-    if not final:
+def update_user(instance, amt, win=True, final=False, double=False):
+    if not final and not double:
         instance.played = F('played') + 1
         if win:
             instance.won = F('won') + 1
         else:
             instance.lost = F('lost') + 1
 
-    instance.amount = F('amount') + amt
+    instance.amount = F('amount') + amt if win else F('amount')-amt
     instance.save(update_fields=['played', 'amount', 'won', 'lost'])
 
 
@@ -77,18 +90,16 @@ def update_losing_bets(bets, final=False):
 
 def update_no_result_bets(bets):
     for bet in bets:
-        bet.status = settings.PREDICTION_STATUS_TYPES[-1][
-            0]
+        bet.status = settings.PREDICTION_STATUS_TYPES[-1][0]
         bet.save(update_fields=['status'])
 
 
-def update_prediction(instance, amt, win=True, final=False):
-    instance.result = amt if win else amt * -1
+def update_prediction(instance, amt, win=True, final=False, double=False):
+    instance.result = F('result') + amt if win else F('result')-amt
     instance.status = settings.PREDICTION_STATUS_TYPES[2][
         0] if win else settings.PREDICTION_STATUS_TYPES[3][0]
     instance.save(update_fields=['result', 'status'])
-
-    update_user(instance.user.profile, instance.result, win, final)
+    update_user(instance.user.profile, amt, win, final, double)
 
 
 def update_defaulters(match_bets, final=False):

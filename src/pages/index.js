@@ -4,3 +4,4 @@ export { Home } from "./Home";
 export { Match } from "./Match";
 export { Matches } from "./Matches";
 export { NotFound } from "./NotFound";
+export { Rules } from "./Rules";

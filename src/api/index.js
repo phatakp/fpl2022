@@ -64,6 +64,10 @@ export const fetchRecent = (params) => {
   return instance().get(`/matches/history/?team1=${team1}&team2=${team2}`);
 };
 
+export const fetchAllPredictions = (token) => {
+  return instance(token).get("/predictions/");
+};
+
 export const fetchMatchPredictions = (token, params) => {
   const { num } = params;
 
@@ -95,6 +99,10 @@ export const updatePrediction = (
 ) => {
   const data = JSON.stringify({ team_name, match_num, amount });
   return instance(token).put(`/predictions/${pred_id}/`, data);
+};
+
+export const doublePrediction = (token, pred_id) => {
+  return instance(token).put(`/predictions/${pred_id}/double/`);
 };
 
 export const updateScore = (

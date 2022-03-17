@@ -16,7 +16,7 @@ function AuthReducer(state, action) {
       return { ...authState };
     case actions.USER_LOADED:
       const { id, name, email } = action.payload.user;
-      const { played, won, lost, amount, ipl_admin, ipl_winner } =
+      const { played, won, lost, amount, ipl_admin, ipl_winner, doubles } =
         action.payload;
 
       return {
@@ -30,6 +30,7 @@ function AuthReducer(state, action) {
         amount,
         ipl_admin,
         ipl_winner,
+        doubles,
       };
     default:
       return state;

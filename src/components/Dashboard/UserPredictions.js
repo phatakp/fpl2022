@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Image, Table } from "react-bootstrap";
+import { Card, Image, Pagination, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Loader, MotionDiv } from "..";
 import { fetchUserPredictions } from "../../api";
@@ -24,7 +24,6 @@ export function UserPredictions({ currUser }) {
   );
 
   const pages = Math.ceil(predictions.length / PER_PAGE);
-
   const pagePredictions = getPaginatedData(predictions, currentPage, PER_PAGE);
 
   return (
@@ -83,17 +82,56 @@ export function UserPredictions({ currUser }) {
           </tbody>
         </Table>
         <div className="pagination">
-          {currentPage > 1 && (
-            <Button onClick={() => setCurrentPage((page) => page - 1)}>
-              Prev
-            </Button>
-          )}
+          <Pagination>
+            {currentPage > 1 && (
+              <Pagination.Prev
+                onClick={() => setCurrentPage((page) => page - 1)}
+              />
+            )}
+            <Pagination.Item
+              active={currentPage === 1}
+              onClick={() => setCurrentPage(1)}
+            >
+              {1}
+            </Pagination.Item>
 
-          {currentPage < pages && (
-            <Button onClick={() => setCurrentPage((page) => page + 1)}>
-              Next
-            </Button>
-          )}
+            <Pagination.Ellipsis />
+
+            {currentPage < 5 &&
+              [...Array(3).keys()].map((page) => (
+                <Pagination.Item
+                  key={page}
+                  onClick={() => setCurrentPage(page + 2)}
+                  active={currentPage === page + 2}
+                >
+                  {page + 2}
+                </Pagination.Item>
+              ))}
+
+            {currentPage > 4 &&
+              [...Array(3).keys()].map((page) => (
+                <Pagination.Item
+                  key={page}
+                  onClick={() => setCurrentPage(page + 4)}
+                  active={currentPage === page + 4}
+                >
+                  {page + 4}
+                </Pagination.Item>
+              ))}
+
+            <Pagination.Ellipsis />
+            <Pagination.Item
+              active={currentPage === pages}
+              onClick={() => setCurrentPage(pages)}
+            >
+              {pages}
+            </Pagination.Item>
+            {currentPage < pages && (
+              <Pagination.Next
+                onClick={() => setCurrentPage((page) => page + 1)}
+              />
+            )}
+          </Pagination>
         </div>
       </Card.Body>
     </Card>

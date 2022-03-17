@@ -15,4 +15,4 @@ class PredictionManager(models.Manager):
         return super().bulk_create(objs, **kwargs)
 
     def get_queryset(self):
-        return super().get_queryset().select_related('user', 'match__team1', 'match__team2', 'match__bat_first', 'team').order_by('-match__num')
+        return super().get_queryset().select_related('user', 'match__team1', 'match__team2', 'match__bat_first', 'team').order_by('-match__num', 'updated')

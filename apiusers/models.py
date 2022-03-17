@@ -32,6 +32,7 @@ class UserProfile(models.Model):
     won = models.PositiveSmallIntegerField(default=0)
     lost = models.PositiveSmallIntegerField(default=0)
     amount = models.FloatField(default=0)
+    doubles = models.PositiveSmallIntegerField(default=5)
 
     objects = UserProfileManager()
 

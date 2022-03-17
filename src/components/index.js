@@ -6,6 +6,7 @@ export { Profile } from "./Dashboard/Profile";
 export { ResultsNFixtures } from "./Dashboard/ResultsNFixtures";
 export { TeamStandings } from "./Dashboard/TeamStandings";
 export { UserPredictions } from "./Dashboard/UserPredictions";
+export { DoubleForm } from "./DoubleForm";
 export { Loader } from "./Loader";
 export { MatchPredictions } from "./Match/MatchPredictions";
 export { MatchStats } from "./Match/MatchStats";

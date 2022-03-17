@@ -1,6 +1,5 @@
 .topnav {
-    /* background: #19398a url(../images/bannerBg.png) no-repeat left center; */
-    box-shadow: 0 4px 8px 0 hsl(0deg 0% 7% / 50%);
+    background: linear-gradient(92.04deg, #131232 24.18%, #19398a 50.95%, #161641 80.32%);
     color: white;
 }
 

@@ -64,6 +64,14 @@ export function matchCutoffPassed(date) {
   return currTime > matchTime;
 }
 
+export function withinDoubleCutoff(date) {
+  const currTime = getIndiaTime();
+  const matchTime = getIndiaTime(date);
+  const doubleCutoffTime = getIndiaTime(date);
+  doubleCutoffTime.setHours(doubleCutoffTime.getHours() + 1);
+  return matchTime < currTime && currTime < doubleCutoffTime;
+}
+
 export const axiosParms = (method, url, data = "", token = null) => {
   const headers = {
     "Content-Type": "application/json",
@@ -86,36 +94,62 @@ export const getMatchByNum = (matches, num) => {
   return matches.filter((match) => match.match.num === num)[0];
 };
 
-export const getTeamMatches = (matches, teamShortName, count = null) => {
+export const getTeamMatches = (
+  matches,
+  teamShortName,
+  count = null,
+  form = false
+) => {
   const result = matches.filter((match) =>
     teamShortName
       ? match.match.team1.short_name === teamShortName ||
         match.match.team2.short_name === teamShortName
       : match
   );
+  if (form)
+    return result.sort((a, b) => a.match.num - a.match.num).slice(0, count);
   if (count)
-    return result.sort((a, b) => b.match.date > a.match.date).slice(0, count);
+    return result.sort((a, b) => b.match.num - a.match.num).slice(0, count);
   return result;
+};
+
+export const getPlayerForm = (predictions, userid) => {
+  if (predictions.length <= 0) return null;
+  const userPreds = predictions.filter(
+    (item) =>
+      item.user.id === userid &&
+      item.match &&
+      getIndiaTime(item.match.date) <= getIndiaTime()
+  );
+  if (userPreds.length < 3) {
+    const schPreds = predictions
+      .filter(
+        (item) =>
+          item.user.id === userid &&
+          item.match &&
+          getIndiaTime(item.match.date) > getIndiaTime()
+      )
+      .sort((a, b) => a.match.num - b.match.num)
+      .slice(0, 3 - userPreds.length);
+
+    return userPreds.concat(schPreds).sort((a, b) => b.match.num - a.match.num);
+  }
+
+  return userPreds.sort((a, b) => b.match.num - a.match.num).slice(0, 3);
 };
 
 export const teamImage = (team) => {
   if (!team) return "";
-  // let img = require(`../images/team-logos-round-big/${team}.png`);
-  // return img;
   return `${process.env.REACT_APP_STATIC_URL}/team-logos-round-big/${team}.png`;
 };
 
 export const teamLogo = (team) => {
   if (!team) return "";
-  // let img = require(`../images/team-logos-396x396/${team}.png`);
-  // return img;
   return `${process.env.REACT_APP_STATIC_URL}/team-logos-396x396/${team}.png`;
 };
 
 export const teamBanner = (team) => {
   if (!team) return "";
-  // let img = require(`../images/team-banner/${team}.png`);
-  // return img;
   return `${process.env.REACT_APP_STATIC_URL}/team-banner/${team}.png`;
 };
 

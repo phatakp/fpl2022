@@ -15,18 +15,22 @@ export function useAuth() {
 
   const login = useCallback(
     async (email, password) => {
-      const resp = await fetchToken(email, password);
-      if (resp.status === 200) {
-        dispatch({ type: actions.AUTHENTICATED, payload: resp.data });
-        const res = await fetchUser(resp.data.access);
-        if (res.status === 200) {
-          dispatch({ type: actions.USER_LOADED, payload: res.data });
-          return res;
+      try {
+        const resp = await fetchToken(email, password);
+        if (resp.status === 200) {
+          dispatch({ type: actions.AUTHENTICATED, payload: resp.data });
+          const res = await fetchUser(resp.data.access);
+          if (res.status === 200) {
+            dispatch({ type: actions.USER_LOADED, payload: res.data });
+            return res;
+          } else {
+            return res;
+          }
         } else {
-          return res;
+          return resp;
         }
-      } else {
-        return resp;
+      } catch (error) {
+        return error.response;
       }
     },
     [dispatch]

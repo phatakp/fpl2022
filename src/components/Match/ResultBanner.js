@@ -1,13 +1,20 @@
 import React from "react";
 import { Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Loader, MatchScoreForm, MatchWinnerForm, PredictionForm } from "..";
+import {
+  DoubleForm,
+  Loader,
+  MatchScoreForm,
+  MatchWinnerForm,
+  PredictionForm,
+} from "..";
 import { fetchResults } from "../../api";
 import {
   formattedDate,
   formattedTime,
   getMatchByNum,
   matchCutoffPassed,
+  withinDoubleCutoff,
 } from "../../helpers";
 import { useAPIData, useAuth, useModal } from "../../hooks";
 import { MotionDiv } from "../MotionDiv";
@@ -23,6 +30,11 @@ export function ResultBanner({ match, statsPage }) {
     "Match Prediction"
   );
 
+  const { setShow: setDoubleShow, modal: doubleModal } = useModal(
+    <DoubleForm match={match} />,
+    "Play Double"
+  );
+
   const { setShow: setScoreShow, modal: scoreModal } = useModal(
     <MatchScoreForm match={match} />,
     "Update Match Score"
@@ -36,7 +48,8 @@ export function ResultBanner({ match, statsPage }) {
   if (!match) return null;
   if (isLoading) return <Loader />;
 
-  const { team1, team2, type, num, venue, date, bat_first } = match.match;
+  const { team1, team2, type, num, venue, date, bat_first, double } =
+    match.match;
   const { winner, win_margin, win_type, status } = match;
   const { team1_score, team2_score, team1_overs, team2_overs } = match.match;
 
@@ -62,6 +75,7 @@ export function ResultBanner({ match, statsPage }) {
         {modal}
         {scoreModal}
         {winnerModal}
+        {doubleModal}
         <div className="result__venue">
           <span className="match-num">
             {type === "league"
@@ -72,6 +86,7 @@ export function ResultBanner({ match, statsPage }) {
           <span className="match-date">
             {formattedDate(date) + " " + formattedTime(date)}
           </span>
+          {double && <div className="double">Double Card Played</div>}
           <hr />
         </div>
         <h5 className="result__status">
@@ -123,6 +138,16 @@ export function ResultBanner({ match, statsPage }) {
             onClick={() => setShow(true)}
           >
             Predict
+          </Button>
+        )}
+
+        {withinDoubleCutoff(date) && user.doubles > 0 && !double && (
+          <Button
+            className="match-btn"
+            variant="warning"
+            onClick={() => setDoubleShow(true)}
+          >
+            Play Double
           </Button>
         )}
 

@@ -13,7 +13,7 @@ import { MotionDiv } from "../MotionDiv";
 
 export function DashMatch({ match, currMatch }) {
   const navigate = useNavigate();
-  const { type, team1, team2, num, date, venue, slug } = match.match;
+  const { type, team1, team2, num, date, venue, slug, double } = match.match;
   const { winner, win_margin, win_type, status } = match;
   const { id } = useAuth();
 
@@ -44,6 +44,7 @@ export function DashMatch({ match, currMatch }) {
             <strong>{type === "league" ? "Match " + num : type},&nbsp;</strong>
             <small>{venue}</small>
           </Card.Title>
+          {double && <div className="double">Double</div>}
           {winner && win_type !== "super" && (
             <div className={`result ${winner.short_name}-color`}>
               <MatchTeam team={winner} />

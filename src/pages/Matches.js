@@ -28,9 +28,9 @@ export function Matches({ fixturePage }) {
             setFilterValue={setFilterValue}
           />
 
-          <div className="team-filter">
+          <div className="team-filter" onClick={() => setShow(true)}>
             <span>Filter </span>
-            <IoFilter onClick={() => setShow(true)} />
+            <IoFilter />
           </div>
         </div>
 

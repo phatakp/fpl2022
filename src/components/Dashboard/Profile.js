@@ -13,7 +13,7 @@ import { MotionDiv } from "../MotionDiv";
 export function Profile({ currUser }) {
   const { data: users, isLoading } = useAPIData(fetchUsers);
   if (isLoading) return <Loader />;
-  const { id, name, won, lost, amount, ipl_winner: winner } = currUser;
+  const { id, name, won, lost, amount, doubles, ipl_winner: winner } = currUser;
   const winpct = (won / (won + lost)) * 100 || 0;
   const rank = getRank(users, id);
 
@@ -33,7 +33,15 @@ export function Profile({ currUser }) {
           />
         </MotionDiv>
         <Card.Title>
-          <MotionDiv type="slideUp">{name}</MotionDiv>
+          <MotionDiv type="slideUp">
+            <span>
+              {name}
+              <br />
+            </span>
+            <small>
+              Doubles Left: <strong>{doubles}</strong>
+            </small>
+          </MotionDiv>
         </Card.Title>
 
         <MotionDiv className="stats">

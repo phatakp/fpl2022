@@ -22,17 +22,20 @@ export function RegisterForm() {
       setError("The two password fields didn't match");
       return;
     }
-    const resp = await register(
-      inp_email,
-      name,
-      password,
-      password2,
-      iplWinner
-    );
-    if (resp.status === 201) {
-      navigate("/login");
-    } else {
-      const { email, non_field_errors } = resp.data;
+    try {
+      const resp = await register(
+        inp_email,
+        name,
+        password,
+        password2,
+        iplWinner
+      );
+      if (resp.status === 201) {
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err.response);
+      const { email, non_field_errors } = err.response.data;
       if (email) {
         setError(email[0]);
       }

@@ -18,6 +18,7 @@ class Prediction(models.Model):
     amount = models.PositiveSmallIntegerField()
     updated = models.DateTimeField(default=timezone.localtime)
     ipl_winner = models.BooleanField(default=False)
+    double = models.BooleanField(default=False)
     status = models.CharField(max_length=20,
                               choices=settings.PREDICTION_STATUS_TYPES,
                               default=settings.PREDICTION_STATUS_TYPES[0][0])
@@ -26,7 +27,7 @@ class Prediction(models.Model):
     objects = PredictionManager()
 
     def __str__(self) -> str:
-        return f"{self.user} {self.match}"
+        return f"{self.user}:{self.match}"
 
     class Meta:
         unique_together = ('user', 'match', 'team')

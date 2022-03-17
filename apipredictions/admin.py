@@ -7,5 +7,5 @@ from .models import Prediction
 @admin.register(Prediction)
 class PredictionAdmin(admin.ModelAdmin):
     list_display = ('user', 'match', 'team', 'amount',
-                    'result', 'ipl_winner', 'status')
-    list_filter = ('user', 'match')
+                    'result', 'ipl_winner', 'status', 'double')
+    list_filter = ('user', 'match', 'double')

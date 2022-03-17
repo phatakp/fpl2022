@@ -13,4 +13,4 @@ class UserAccountAdmin(admin.ModelAdmin):
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'ipl_winner', 'played',
-                    'won', 'lost', 'amount', 'ipl_admin')
+                    'won', 'lost', 'amount', 'doubles', 'ipl_admin')

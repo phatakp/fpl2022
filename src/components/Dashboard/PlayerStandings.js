@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Badge, Button, Card, Image, Table } from "react-bootstrap";
 import { Loader } from "..";
-import { fetchUsers } from "../../api";
-import { firstName, getPaginatedData, teamImage } from "../../helpers";
+import { fetchAllPredictions, fetchUsers } from "../../api";
+import {
+  firstName,
+  getPaginatedData,
+  getPlayerForm,
+  teamImage,
+} from "../../helpers";
 import { useAPIData } from "../../hooks";
 import { MotionDiv } from "../MotionDiv";
 
@@ -11,8 +16,12 @@ const PER_PAGE = 10;
 export function PlayerStandings() {
   const [currentPage, setCurrentPage] = useState(1);
   const { data: standings, isLoading } = useAPIData(fetchUsers);
+  const { data: predictions, isLoading: loading } = useAPIData(
+    fetchAllPredictions,
+    true
+  );
 
-  if (isLoading) return <Loader />;
+  if (isLoading || loading) return <Loader />;
 
   const pages = Math.ceil(standings.length / PER_PAGE);
 
@@ -26,10 +35,8 @@ export function PlayerStandings() {
           <thead>
             <tr>
               <th>Name</th>
-              <th>P</th>
-              <th>W</th>
-              <th>L</th>
               <th className="amount">Value</th>
+              {predictions.length > 0 && <th className="form">Form</th>}
             </tr>
           </thead>
           <tbody>
@@ -48,16 +55,6 @@ export function PlayerStandings() {
                     </MotionDiv>
                   </td>
 
-                  <td>
-                    <MotionDiv>{item.played}</MotionDiv>
-                  </td>
-                  <td>
-                    <MotionDiv>{item.won}</MotionDiv>
-                  </td>
-                  <td>
-                    <MotionDiv>{item.lost}</MotionDiv>
-                  </td>
-
                   <td
                     className={`amount ${
                       item.amount < 0
@@ -72,6 +69,24 @@ export function PlayerStandings() {
                       {item.amount.toFixed(2)}
                     </MotionDiv>
                   </td>
+
+                  {predictions.length > 0 && (
+                    <td className="form">
+                      <MotionDiv>
+                        {getPlayerForm(predictions, item.user.id)
+                          .reverse()
+                          .map((pred) => (
+                            <span key={pred.id} className={pred.status}>
+                              {pred.status === "won"
+                                ? "W"
+                                : pred.status === "lost"
+                                ? "L"
+                                : "-"}
+                            </span>
+                          ))}
+                      </MotionDiv>
+                    </td>
+                  )}
                 </tr>
               ))}
           </tbody>

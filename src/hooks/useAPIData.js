@@ -12,6 +12,7 @@ export function useAPIData(func, token = false, params = null) {
       let access;
       if (token) access = await getToken();
       if (access && params) resp = await func(access, params);
+      else if (access) resp = await func(access);
       else if (params) resp = await func(params);
       else resp = await func();
 

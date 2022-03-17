@@ -13,14 +13,7 @@ export function NavBar() {
   };
 
   return (
-    <Navbar
-      className="topnav"
-      expand="lg"
-      bg="dark"
-      style={{
-        background: `#19398a url(${process.env.REACT_APP_STATIC_URL}/bannerBg.png) no-repeat left center`,
-      }}
-    >
+    <Navbar className="topnav" expand="lg" bg="dark">
       <Container fluid>
         <LinkContainer to="/">
           <Navbar.Brand>
@@ -42,6 +35,10 @@ export function NavBar() {
           <Nav className="ms-auto">
             <LinkContainer to="/">
               <Nav.Link>Home</Nav.Link>
+            </LinkContainer>
+
+            <LinkContainer to="/game-rules">
+              <Nav.Link>Rules</Nav.Link>
             </LinkContainer>
 
             <NavDropdown title="Matches" id="matches-dropdown">

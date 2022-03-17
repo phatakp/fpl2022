@@ -1,20 +1,31 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { MotionDiv, PredictionForm } from "..";
-import { formattedDate, formattedTime, matchCutoffPassed } from "../../helpers";
-import { useModal } from "../../hooks";
+import { DoubleForm, MotionDiv, PredictionForm } from "..";
+import {
+  formattedDate,
+  formattedTime,
+  matchCutoffPassed,
+  withinDoubleCutoff,
+} from "../../helpers";
+import { useAuth, useModal } from "../../hooks";
 import { CurrMatchTeam } from "./CurrMatchTeam";
 
 export function CurrentMatch({ match }) {
   const navigate = useNavigate();
-  const { team1, team2, type, num, venue, date, slug } = match.match;
+  const { state: user } = useAuth();
+  const { team1, team2, type, num, venue, date, slug, double } = match.match;
   const { winner, win_margin, win_type } = match;
   const { team1_score, team2_score, team1_overs, team2_overs } = match.match;
 
   const { setShow, modal } = useModal(
     <PredictionForm match={match} />,
     "Match Prediction"
+  );
+
+  const { setShow: setDoubleShow, modal: doubleModal } = useModal(
+    <DoubleForm match={match} />,
+    "Play Double"
   );
 
   if (!match) return null;
@@ -27,6 +38,7 @@ export function CurrentMatch({ match }) {
       }}
     >
       {modal}
+      {doubleModal}
       <MotionDiv className="match-venue">
         <span className="match-num">
           {type === "league"
@@ -37,6 +49,7 @@ export function CurrentMatch({ match }) {
         <span className="match-date">
           {formattedDate(date) + " " + formattedTime(date)}
         </span>
+        {double && <div className="double">Double Card Played</div>}
         <hr />
       </MotionDiv>
       <h5 className="match-status">
@@ -78,6 +91,15 @@ export function CurrentMatch({ match }) {
             onClick={() => setShow(true)}
           >
             Predict Now
+          </Button>
+        )}
+        {withinDoubleCutoff(date) && user.doubles > 0 && !double && (
+          <Button
+            className="match-btn"
+            variant="warning"
+            onClick={() => setDoubleShow(true)}
+          >
+            Play Double
           </Button>
         )}
       </div>

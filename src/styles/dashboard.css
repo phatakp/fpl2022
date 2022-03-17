@@ -34,6 +34,35 @@ Player Standings
     width: 30px;
 }
 
+.dash-player-standings th.form {
+    text-align: center;
+}
+
+.dash-player-standings td.form div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.dash-player-standings td.form span {
+    border: 1px solid #989898;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    background-color: #989898;
+    color: #fff;
+}
+
+.dash-player-standings td.form span.won {
+    background-color: green;
+}
+
+.dash-player-standings td.form span.lost {
+    background-color: red;
+}
+
 /*----------------------
 Results & Fixtures
 -----------------------*/
@@ -64,25 +93,33 @@ Results & Fixtures
     text-transform: capitalize;
     color: #c0bbbb;
     text-align: center;
-    /* padding: 0.25rem; */
 }
 
 .results-fixtures .dash-match .card-title strong {
-    /* color: var(--bs-danger); */
     font-size: 0.9rem;
 }
 
-.results-fixtures .dash-match:not(.future) .card-title strong {
-    /* color: #101010; */
-}
+
 
 .results-fixtures .dash-match .card-title small {
     font-size: 0.8rem;
-    /* color: #000; */
 }
 
-.results-fixtures .dash-match.future .card-title small {
-    /* color: #383838; */
+.dash-match {
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-match .double {
+    position: absolute;
+    top: 1rem;
+    left: -2rem;
+    width: 8rem;
+    font-size: 1.25rem;
+    background: linear-gradient(92.04deg, #131232 24.18%, #19398a 50.95%, #161641 80.32%);
+    transform: rotate(-45deg);
+    color: #fff;
+    text-align: center;
 }
 
 .dash-match .result {
@@ -176,7 +213,8 @@ Team Standings
     width: 30px;
 }
 
-.dash-team-standings .nrr {
+.dash-team-standings .nrr,
+.dash-team-standings .amount {
     text-align: right;
 }
 
@@ -184,6 +222,36 @@ Team Standings
     font-size: 0.9rem;
     white-space: nowrap;
 }
+
+.standings th.form {
+    text-align: center;
+}
+
+.standings td.form div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.standings td.form span {
+    border: 1px solid #989898;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    background-color: #989898;
+    color: #fff;
+}
+
+.standings td.form span.won {
+    background-color: green;
+}
+
+.standings td.form span.lost {
+    background-color: red;
+}
+
 
 
 /*----------------------
@@ -203,6 +271,18 @@ Current Match
     color: white;
     padding: 1rem;
     position: relative;
+}
+
+.curr-match .double {
+    font-size: 1.25rem;
+    font-weight: 700;
+    background-color: var(--bs-warning);
+    color: #000;
+    width: max-content;
+    margin: auto;
+    margin-top: 1rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
 }
 
 .curr-match .match-venue {
@@ -334,6 +414,14 @@ Profile
 .profile .card-title {
     text-align: center;
     text-transform: capitalize;
+}
+
+.profile .card-title small {
+    color: green;
+}
+
+.profile .card-title strong {
+    font-size: 1.5rem;
 }
 
 .profile .profileImg {

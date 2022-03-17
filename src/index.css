@@ -198,3 +198,7 @@ body {
 .invalid-feedback {
   display: block;
 }
+
+.alert {
+  text-transform: capitalize;
+}
