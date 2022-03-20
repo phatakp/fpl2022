@@ -133,3 +133,22 @@ export const updateWinner = (token, winner_name, stat, type, margin, num) => {
   });
   return instance(token).put(`/matches/results/${num}/`, data);
 };
+
+export const changePassword = (token, old_password, password, password2) => {
+  const data = JSON.stringify({ old_password, password, password2 });
+  return instance(token).put("/user/chgpwd/", data);
+};
+
+export const validateEmail = (email) => {
+  return instance().get(`/user/validate/${email}/`);
+};
+
+export const resetPassword = (userid, email, password, password2) => {
+  const data = JSON.stringify({ email, password, password2 });
+  return instance().put(`/user/resetpwd/${userid}/`, data);
+};
+
+export const changeIPLWinner = (token, ipl_winner) => {
+  const data = JSON.stringify({ ipl_winner });
+  return instance(token).put("/user/chgwinner/", data);
+};

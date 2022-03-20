@@ -1,5 +1,7 @@
+export { ChangePassword } from "./Account/ChangePassword";
 export { FormContainer } from "./Account/FormContainer";
 export { PanelContainer } from "./Account/PanelContainer";
+export { ResetPassword } from "./Account/ResetPassword";
 export { CurrentMatch } from "./Dashboard/CurrentMatch";
 export { PlayerStandings } from "./Dashboard/PlayerStandings";
 export { Profile } from "./Dashboard/Profile";

@@ -60,6 +60,11 @@ export function Rules() {
               registration. An automatic stake of Rs.500 will be applicable for
               this case, which will be settled after final match.
             </li>
+            <li className="imp">
+              IPL Winner prediction can be changed up until the completion of
+              Match 35. You can use the Update Profile button under your profile
+              (on top right corner).
+            </li>
             <li>
               <span className="text-danger">
                 After registration a caution deposit of Rs.500 has to be made

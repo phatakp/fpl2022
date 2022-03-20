@@ -2,19 +2,31 @@ import { Container, Image, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { ChangePassword } from ".";
+import { useModal } from "../hooks";
 import { useAuth } from "../hooks/useAuth";
+import { UpdateProfile } from "./Account/UpdateProfile";
 
 export function NavBar() {
   const navigate = useNavigate();
-  const { name, logout } = useAuth();
+  const { state: user, name, logout } = useAuth();
+
   const handleLogout = async () => {
     await logout();
     navigate("/");
   };
 
+  const { setShow, modal } = useModal(<ChangePassword />, "Change Password");
+  const { setShow: setProfileShow, modal: profileModal } = useModal(
+    <UpdateProfile user={user} />,
+    "Update Profile"
+  );
+
   return (
     <Navbar className="topnav" expand="lg" bg="dark">
       <Container fluid>
+        {modal}
+        {profileModal}
         <LinkContainer to="/">
           <Navbar.Brand>
             <Image
@@ -56,9 +68,15 @@ export function NavBar() {
                   <Nav.Link>Dashboard</Nav.Link>
                 </LinkContainer>
                 <NavDropdown title={name} id="profile-dropdown">
-                  <LinkContainer to="/chg-password">
-                    <NavDropdown.Item>Change Password</NavDropdown.Item>
-                  </LinkContainer>
+                  <NavDropdown.Item onClick={() => setShow(true)}>
+                    Change Password
+                  </NavDropdown.Item>
+
+                  <NavDropdown.Item onClick={() => setProfileShow(true)}>
+                    Update Profile
+                  </NavDropdown.Item>
+
+                  <NavDropdown.Divider />
 
                   <NavDropdown.Item onClick={handleLogout}>
                     Logout

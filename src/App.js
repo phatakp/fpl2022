@@ -22,7 +22,6 @@ function App() {
           <Route path="/game-rules" element={<Rules />} />
           <Route path="/login" element={<Account page="Login" />} />
           <Route path="/register" element={<Account page="Register" />} />
-          <Route path="/chg-password" element={<Account page="ChgPwd" />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/fixtures" element={<Matches fixturePage={true} />} />
           <Route path="/results" element={<Matches fixturePage={false} />} />

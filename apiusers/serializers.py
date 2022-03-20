@@ -1,4 +1,6 @@
 
+from unittest.util import _MAX_LENGTH
+
 from apiteams.serializers import TeamSerializer
 from django.apps import apps
 from django.conf import settings
@@ -10,10 +12,11 @@ from rest_framework_simplejwt import serializers as jwt_serializers
 from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import UserProfile
+from .models import UserAccount, UserProfile
 
 Team = apps.get_model('apiteams', 'Team')
 Prediction = apps.get_model('apipredictions', "Prediction")
+MatchResult = apps.get_model('apimatches', "MatchResult")
 
 
 class TokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
@@ -136,3 +139,97 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = '__all__'
+
+
+class UserValidateEmailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserAccount
+        fields = ('email', 'id')
+
+    def validate_email(self, email):
+        if not get_user_model().objects.filter(email=email).exists():
+            raise serializers.ValidationError(_("Email not registered"))
+        return email
+
+
+class ChgPwdSerializer(serializers.ModelSerializer):
+    old_password = serializers.CharField(write_only=True, required=True)
+    password = serializers.CharField(write_only=True, required=True)
+    password2 = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = UserAccount
+        fields = ('old_password', 'password', 'password2')
+
+    def validate_old_password(self, password):
+        if not self.instance.check_password(password):
+            raise serializers.ValidationError(_("Old Password not correct"))
+
+    def validate_password(self, password):
+        validate_password(password)
+        return password
+
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError(
+                _("The two password fields didn't match"))
+        return data
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance
+
+
+class ResetPwdSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True)
+    password2 = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = UserAccount
+        fields = ('email', 'password', 'password2')
+
+    def validate_email(self, email):
+        if not get_user_model().objects.filter(email=email).exists():
+            raise serializers.ValidationError(_("Email not registered"))
+        return email
+
+    def validate_password(self, password):
+        validate_password(password)
+        return password
+
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError(
+                _("The two password fields didn't match"))
+        return data
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance
+
+
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer(many=False, read_only=True)
+    ipl_winner = serializers.CharField(required=True, write_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ('user', 'ipl_winner')
+
+    def validate_ipl_winner(self, value):
+        team = Team.objects.get_object_or_none(short_name=value)
+        if not team:
+            raise serializers.ValidationError(f"Invalid Team {value}")
+        return team
+
+    def validate(self, attrs):
+        match = MatchResult.objects.exclude(
+            status=settings.MATCH_STATUS[0][0]).order_by('-match__num').first()
+        if match.match.num > 34:
+            raise serializers.ValidationError(
+                "Cutoff passed for IPL winner change")
+        return super().validate(attrs)

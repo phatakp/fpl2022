@@ -121,7 +121,6 @@ export function RegisterForm() {
           label="Predict IPL Winner"
         >
           <Form.Select
-            // className="input-field"
             name="iplWinner"
             value={iplWinner}
             onChange={(e) => setIPLWinner(e.target.value)}

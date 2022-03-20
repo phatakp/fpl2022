@@ -1,4 +1,5 @@
 import datetime as dt
+from cgitb import lookup
 
 from django.conf import settings
 from rest_framework import generics, permissions, status
@@ -79,3 +80,40 @@ class LoadUserView(generics.RetrieveAPIView):
 
     def get_object(self):
         return UserProfile.objects.get_object_or_none(user=self.request.user)
+
+
+class UserChgPwdView(generics.UpdateAPIView):
+    serializer_class = ChgPwdSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = UserAccount.objects.exclude(is_staff=True)
+
+    def get_object(self):
+        return self.request.user
+
+
+class UserResetPwdView(generics.UpdateAPIView):
+    serializer_class = ResetPwdSerializer
+    permission_classes = (permissions.AllowAny,)
+    queryset = UserAccount.objects.exclude(is_staff=True)
+    lookup_field = 'id'
+
+
+class UserValidateEmailView(generics.RetrieveAPIView):
+    serializer_class = UserValidateEmailSerializer
+    permission_classes = (permissions.AllowAny,)
+    queryset = UserAccount.objects.exclude(is_staff=True)
+    lookup_field = 'email'
+
+
+class UserProfileUpdateView(generics.UpdateAPIView):
+    serializer_class = UserProfileUpdateSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = UserProfile.objects.exclude(user__is_staff=True)
+
+    def get_object(self):
+        return self.request.user
+
+    def perform_update(self, serializer):
+        UserProfile.objects.filter(user=self.request.user) \
+            .update(ipl_winner=serializer.validated_data.get('ipl_winner'))
+        return super().perform_update(serializer)

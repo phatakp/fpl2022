@@ -1,5 +1,4 @@
 import React from "react";
-import { ChgPasswordForm } from "./ChgPasswordForm";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
 
@@ -18,6 +17,6 @@ function getForm(page) {
     case "Login":
       return <LoginForm />;
     default:
-      return <ChgPasswordForm />;
+      return null;
   }
 }

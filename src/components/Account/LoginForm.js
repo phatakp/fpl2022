@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ResetPassword } from "../../components";
+import { useModal } from "../../hooks";
 import { useAuth } from "../../hooks/useAuth";
 import { MotionDiv } from "../MotionDiv";
 
@@ -22,8 +24,11 @@ export function LoginForm() {
     }
   };
 
+  const { setShow, modal } = useModal(<ResetPassword />, "Reset Password");
+
   return (
     <MotionDiv type="slideRight">
+      {modal}
       <Form className="sign-in-form" autoComplete="off" onSubmit={formSubmit}>
         <h2 className="form-title">Login</h2>
 
@@ -62,6 +67,10 @@ export function LoginForm() {
 
         <Button className="form-button" type="submit">
           Submit
+        </Button>
+
+        <Button variant="link" onClick={() => setShow(true)}>
+          Forgot Password
         </Button>
       </Form>
     </MotionDiv>

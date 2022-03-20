@@ -222,6 +222,12 @@ def load_matches():
     # MatchResult.objects.bulk_create(results)
     # print("Match Details saved successfully")
 
+    # for match in Match.objects.filter(num__lte=35):
+    #     MatchResult.objects.filter(match=match).update(status='completed',
+    #                                                    winner=random.choice(
+    #                                                        match.teams),
+    #                                                    win_type='runs', win_margin=19)
+
 
 def load_history():
     MatchHistory.objects.all().delete()
