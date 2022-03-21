@@ -73,9 +73,8 @@ export function PlayerStandings() {
                   {predictions.length > 0 && (
                     <td className="form">
                       <MotionDiv>
-                        {getPlayerForm(predictions, item.user.id)
-                          .reverse()
-                          .map((pred) => (
+                        {getPlayerForm(predictions, item.user.id).map(
+                          (pred) => (
                             <span key={pred.id} className={pred.status}>
                               {pred.status === "won"
                                 ? "W"
@@ -83,7 +82,8 @@ export function PlayerStandings() {
                                 ? "L"
                                 : "-"}
                             </span>
-                          ))}
+                          )
+                        )}
                       </MotionDiv>
                     </td>
                   )}

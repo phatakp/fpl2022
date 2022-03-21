@@ -88,25 +88,31 @@ export function UserPredictions({ currUser }) {
                 onClick={() => setCurrentPage((page) => page - 1)}
               />
             )}
-            <Pagination.Item
-              active={currentPage === 1}
-              onClick={() => setCurrentPage(1)}
-            >
-              {1}
-            </Pagination.Item>
 
-            <Pagination.Ellipsis />
+            {pages > 1 && (
+              <Pagination.Item
+                active={currentPage === 1}
+                onClick={() => setCurrentPage(1)}
+              >
+                {1}
+              </Pagination.Item>
+            )}
+
+            {pages > 2 && <Pagination.Ellipsis />}
 
             {currentPage < 5 &&
-              [...Array(3).keys()].map((page) => (
-                <Pagination.Item
-                  key={page}
-                  onClick={() => setCurrentPage(page + 2)}
-                  active={currentPage === page + 2}
-                >
-                  {page + 2}
-                </Pagination.Item>
-              ))}
+              [...Array(3).keys()].map(
+                (page) =>
+                  page + 2 < pages && (
+                    <Pagination.Item
+                      key={page}
+                      onClick={() => setCurrentPage(page + 2)}
+                      active={currentPage === page + 2}
+                    >
+                      {page + 2}
+                    </Pagination.Item>
+                  )
+              )}
 
             {currentPage > 4 &&
               [...Array(3).keys()].map((page) => (
@@ -119,13 +125,19 @@ export function UserPredictions({ currUser }) {
                 </Pagination.Item>
               ))}
 
-            <Pagination.Ellipsis />
-            <Pagination.Item
-              active={currentPage === pages}
-              onClick={() => setCurrentPage(pages)}
-            >
-              {pages}
-            </Pagination.Item>
+            {pages > 4 && (
+              <>
+                <Pagination.Ellipsis />
+
+                <Pagination.Item
+                  active={currentPage === pages}
+                  onClick={() => setCurrentPage(pages)}
+                >
+                  {pages}
+                </Pagination.Item>
+              </>
+            )}
+
             {currentPage < pages && (
               <Pagination.Next
                 onClick={() => setCurrentPage((page) => page + 1)}

@@ -114,28 +114,28 @@ export const getTeamMatches = (
 };
 
 export const getPlayerForm = (predictions, userid) => {
-  if (predictions.length <= 0) return null;
-  const userPreds = predictions.filter(
-    (item) =>
-      item.user.id === userid &&
-      item.match &&
-      getIndiaTime(item.match.date) <= getIndiaTime()
-  );
-  if (userPreds.length < 3) {
-    const schPreds = predictions
+  let userPreds;
+  if (predictions.length <= 0) {
+    userPreds = [];
+  } else {
+    userPreds = predictions
       .filter(
         (item) =>
           item.user.id === userid &&
           item.match &&
-          getIndiaTime(item.match.date) > getIndiaTime()
+          getIndiaTime(item.match.date) <= getIndiaTime()
       )
-      .sort((a, b) => a.match.num - b.match.num)
-      .slice(0, 3 - userPreds.length);
-
-    return userPreds.concat(schPreds).sort((a, b) => b.match.num - a.match.num);
+      .sort((a, b) => b.match.num - a.match.num)
+      .slice(0, 3);
+  }
+  if (userPreds.length < 3) {
+    const remain = 3 - userPreds.length;
+    for (let i = 0; i < remain; i++) {
+      userPreds = userPreds.concat([{ id: i + 341279, status: "" }]);
+    }
   }
 
-  return userPreds.sort((a, b) => b.match.num - a.match.num).slice(0, 3);
+  return userPreds;
 };
 
 export const teamImage = (team) => {
