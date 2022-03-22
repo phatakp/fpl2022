@@ -35,12 +35,15 @@ export function RegisterForm() {
       }
     } catch (err) {
       console.log(err.response);
-      const { email, non_field_errors } = err.response.data;
+      const { email, password: pwd, non_field_errors } = err.response.data;
       if (email) {
         setError(email[0]);
       }
       if (non_field_errors) {
         setError(non_field_errors[0]);
+      }
+      if (pwd) {
+        setError(pwd.join("\n"));
       }
     }
   };
