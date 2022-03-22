@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && npm run deploy && python fix_html.py",
+    "build": "react-scripts build && npm run deploy",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "npm run build-copy-html && npm run build-copy-js && npm run build-copy-css",
