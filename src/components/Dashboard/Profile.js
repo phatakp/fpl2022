@@ -46,23 +46,23 @@ export function Profile({ currUser }) {
 
         <MotionDiv className="stats">
           <div className={`circle ${getPosition(users, amount)}`}>
-            <h4
+            <h5
               className={`amount ${
                 amount < 0 ? "text-danger" : "text-success"
               }`}
             >
-              {amount.toFixed(2)}
-            </h4>
+              {amount.toFixed(1)}
+            </h5>
             <div className="label">Balance</div>
           </div>
           <div className={`circle ${getProfileClass(winpct)}`}>
-            <h3
+            <h4
               className={`amount ${
                 winpct < 50 ? "text-danger" : "text-success"
               }`}
             >
               {winpct.toFixed(0)}%
-            </h3>
+            </h4>
             <div className="label">Predictions</div>
           </div>
         </MotionDiv>
