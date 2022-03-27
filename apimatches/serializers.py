@@ -13,7 +13,7 @@ Team = apps.get_model('apiteams', 'Team')
 class MatchSerializer(serializers.ModelSerializer):
     team1 = TeamSerializer(many=False, read_only=True)
     team2 = TeamSerializer(many=False, read_only=True)
-    batFirst = serializers.CharField(required=True, write_only=True)
+    batFirst = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Match
@@ -27,13 +27,15 @@ class MatchSerializer(serializers.ModelSerializer):
     def validate_batFirst(self, value):
         if not self.instance:
             return value
-        team = Team.objects.get_object_or_none(short_name=value)
-        if not team:
-            raise serializers.ValidationError('Invalid Bat First Team')
-        return team
+        if value:
+            team = Team.objects.get_object_or_none(short_name=value)
+            if not team:
+                raise serializers.ValidationError('Invalid Bat First Team')
+            return team
 
     def update(self, instance, validated_data):
-        bat_first = validated_data.pop('batFirst')
+        print(validated_data)
+        bat_first = validated_data.pop('batFirst', None)
         validated_data['bat_first'] = bat_first
 
         for key, value in validated_data.items():

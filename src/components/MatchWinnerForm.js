@@ -37,11 +37,13 @@ export function MatchWinnerForm({ match }) {
         stat: sErr,
         type: tErr,
         margin: mErr,
+        non_field_errors: nErr,
       } = error?.response?.data;
       if (wErr) setError("Invalid Winner");
       else if (sErr) setError("Invalid Status");
       else if (tErr) setError("Invalid Win Type");
       else if (mErr) setError("Invalid Win Margin");
+      else if (nErr) setError(nErr);
     } finally {
       setLoading(false);
     }

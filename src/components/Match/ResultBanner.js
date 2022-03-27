@@ -10,6 +10,7 @@ import {
 } from "..";
 import { fetchResults } from "../../api";
 import {
+  betCutoffPassed,
   formattedDate,
   formattedTime,
   getMatchByNum,
@@ -151,7 +152,7 @@ export function ResultBanner({ match, statsPage }) {
           </Button>
         )}
 
-        {user.ipl_admin && status === "scheduled" && matchCutoffPassed(date) && (
+        {user.ipl_admin && status === "scheduled" && betCutoffPassed(date) && (
           <Button
             className="match-btn"
             variant="warning"

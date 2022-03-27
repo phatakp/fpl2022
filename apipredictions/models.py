@@ -30,4 +30,4 @@ class Prediction(models.Model):
         return f"{self.user}:{self.match}"
 
     class Meta:
-        unique_together = ('user', 'match', 'team')
+        unique_together = ('user', 'match')

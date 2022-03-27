@@ -21,7 +21,7 @@ export function MatchScoreForm({ match }) {
   const [team2Score, setTeam2Score] = useState(team2_score || "0/0");
   const [team1Overs, setTeam1Overs] = useState(team1_overs || 0);
   const [team2Overs, setTeam2Overs] = useState(team2_overs || 0);
-  const [batFirst, setbatFirst] = useState(bat_first?.short_name || "");
+  const [batFirst, setbatFirst] = useState(bat_first || "");
 
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -82,8 +82,6 @@ export function MatchScoreForm({ match }) {
             setError("");
             setMessage("");
           }}
-          required
-          aria-required="true"
         >
           <option value="">--Select--</option>
           <option value={team1.short_name}>{team1.short_name}</option>

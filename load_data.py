@@ -576,8 +576,8 @@ if __name__ == '__main__':
     MatchResult = apps.get_model("apimatches", "MatchResult")
     MatchHistory = apps.get_model("apistats", "MatchHistory")
 
-    load_teams()
-    load_matches()
-    load_history()
+    # load_teams()
+    # load_matches()
+    # load_history()
     # create_users()
     # load_predictions()
