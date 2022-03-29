@@ -183,6 +183,13 @@ UserPredictions
     text-align: right;
 }
 
+.user-predictions td.team svg {
+    fill: #989899;
+    width: 25px;
+    height: 25px;
+    margin: auto;
+}
+
 
 .pagination {
     display: flex;

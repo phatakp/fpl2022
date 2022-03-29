@@ -72,7 +72,7 @@ export function DashMatch({ match, currMatch }) {
           {pred && status === "scheduled" && (
             <Alert variant="success" className="prediction">
               <span>Your Prediction:</span>
-              <strong>&nbsp;{pred.team.short_name}</strong>
+              <strong>&nbsp;{pred?.team?.short_name}</strong>
               <strong>&nbsp;for&nbsp;{pred.amount}</strong>
             </Alert>
           )}

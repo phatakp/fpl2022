@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card, Image, Pagination, Table } from "react-bootstrap";
+import { FaShieldAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Loader, MotionDiv } from "..";
 import { fetchUserPredictions } from "../../api";
@@ -20,12 +21,11 @@ export function UserPredictions({ currUser }) {
 
   if (isLoading) return <Loader />;
   predictions.sort((a, b) =>
-    a?.match?.num && b?.match?.num && b?.match?.num > a?.match?.num ? 1 : -1
+    a?.match?.num && b?.match?.num ? b.match.num - a.match.num : -1
   );
 
   const pages = Math.ceil(predictions.length / PER_PAGE);
   const pagePredictions = getPaginatedData(predictions, currentPage, PER_PAGE);
-
   return (
     <Card className="user-predictions">
       <Card.Body>
@@ -57,7 +57,12 @@ export function UserPredictions({ currUser }) {
                   </td>
                   <td className="team">
                     <MotionDiv>
-                      <Image src={teamLogo(item?.team?.short_name)} />
+                      {item?.team?.short_name ? (
+                        <Image src={teamLogo(item?.team?.short_name)} fluid />
+                      ) : (
+                        <FaShieldAlt />
+                      )}
+                      {/* <Image src={teamLogo(item?.team?.short_name)} /> */}
                     </MotionDiv>
                   </td>
                   <td className="amount">
@@ -98,7 +103,7 @@ export function UserPredictions({ currUser }) {
               </Pagination.Item>
             )}
 
-            {pages > 2 && <Pagination.Ellipsis />}
+            {pages > 1 && <Pagination.Ellipsis />}
 
             {currentPage < 5 &&
               [...Array(3).keys()].map(
@@ -125,17 +130,15 @@ export function UserPredictions({ currUser }) {
                 </Pagination.Item>
               ))}
 
-            {pages > 4 && (
-              <>
-                <Pagination.Ellipsis />
+            {pages > 4 && <Pagination.Ellipsis />}
 
-                <Pagination.Item
-                  active={currentPage === pages}
-                  onClick={() => setCurrentPage(pages)}
-                >
-                  {pages}
-                </Pagination.Item>
-              </>
+            {pages > 1 && (
+              <Pagination.Item
+                active={currentPage === pages}
+                onClick={() => setCurrentPage(pages)}
+              >
+                {pages}
+              </Pagination.Item>
             )}
 
             {currentPage < pages && (

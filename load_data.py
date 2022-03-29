@@ -4,6 +4,7 @@ from datetime import datetime
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.utils import timezone
 from requests_html import HTMLSession
 
 
@@ -32,29 +33,29 @@ def load_matches():
     results = []
     # maxnum = 0
 
-    url = "https://www.iplt20.com/matches/schedule/men"
-    session = HTMLSession()
-    r = session.get(url)
-    matches = r.html.find('.vn-sheduleList', first=True)
-    for element in matches.find('li'):
-        teams = []
-        num_n_date = element.find('.vn-matchno')[0].text
-        num_str, date_str = num_n_date.split(' | ')
-        num = int(num_str.split('-')[-1])
-        time = element.find('.vn-date')[0].text
-        date_str += ' ' + time.split(' IST ')[0] + ' +0530'
-        date = datetime.strptime(date_str, "%A %d %B, %Y %H:%M %z")
-        for team in element.find('.vn-shedTeam'):
-            teams.append(team.find('h3')[0].text)
+    # url = "https://www.iplt20.com/matches/schedule/men"
+    # session = HTMLSession()
+    # r = session.get(url)
+    # matches = r.html.find('.vn-sheduleList', first=True)
+    # for element in matches.find('li'):
+    #     teams = []
+    #     num_n_date = element.find('.vn-matchno')[0].text
+    #     num_str, date_str = num_n_date.split(' | ')
+    #     num = int(num_str.split('-')[-1])
+    #     time = element.find('.vn-date')[0].text
+    #     date_str += ' ' + time.split(' IST ')[0] + ' +0530'
+    #     date = datetime.strptime(date_str, "%A %d %B, %Y %H:%M %z")
+    #     for team in element.find('.vn-shedTeam'):
+    #         teams.append(team.find('h3')[0].text)
 
-        venue = element.find('.vn-matchTime')[0].find('p')[0].text
-        match = Match(num=num, date=date, team1=Team.objects.get(long_name=teams[0]), team2=Team.objects.get(long_name=teams[1]),
-                      type='league', venue=venue)
-        objs.append(match)
-        results.append(MatchResult(match=match))
-    Match.objects.bulk_create(objs)
-    MatchResult.objects.bulk_create(results)
-    print("Match Details saved successfully")
+    #     venue = element.find('.vn-matchTime')[0].find('p')[0].text
+    #     match = Match(num=num, date=date, team1=Team.objects.get(long_name=teams[0]), team2=Team.objects.get(long_name=teams[1]),
+    #                   type='league', venue=venue)
+    #     objs.append(match)
+    #     results.append(MatchResult(match=match))
+    # Match.objects.bulk_create(objs)
+    # MatchResult.objects.bulk_create(results)
+    # print("Match Details saved successfully")
     #     teams = []
     #     scores = []
     #     overs = []
@@ -221,7 +222,19 @@ def load_matches():
     # Match.objects.bulk_create(objs)
     # MatchResult.objects.bulk_create(results)
     # print("Match Details saved successfully")
+    i = 1
+    for team1 in Team.objects.filter(active=True):
+        for team2 in Team.objects.filter(active=True):
+            if team1 != team2 and i < 71:
+                match = Match(num=i, date=timezone.now(), team1=team1, team2=team2,
+                              type="league", venue="Eden Gardens, Kolkata", min_bet=30)
+                objs.append(match)
+                results.append(MatchResult(match=match))
+                i += 1
 
+    Match.objects.bulk_create(objs)
+    MatchResult.objects.bulk_create(results)
+    print("Match Details saved successfully")
     # for match in Match.objects.filter(num__lte=35):
     #     MatchResult.objects.filter(match=match).update(status='completed',
     #                                                    winner=random.choice(
@@ -577,7 +590,7 @@ if __name__ == '__main__':
     MatchHistory = apps.get_model("apistats", "MatchHistory")
 
     # load_teams()
-    # load_matches()
-    # load_history()
-    # create_users()
-    # load_predictions()
+    load_matches()
+    load_history()
+    create_users()
+    load_predictions()

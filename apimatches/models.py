@@ -65,7 +65,8 @@ class Match(models.Model):
 
 
 class MatchResult(models.Model):
-    match = models.OneToOneField(Match, on_delete=models.CASCADE)
+    match = models.OneToOneField(
+        Match, on_delete=models.CASCADE, related_name='result')
     status = models.CharField(max_length=20,
                               choices=settings.MATCH_STATUS,
                               default=settings.MATCH_STATUS[0][0])

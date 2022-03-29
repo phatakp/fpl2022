@@ -121,9 +121,7 @@ export const getPlayerForm = (predictions, userid) => {
     userPreds = predictions
       .filter(
         (item) =>
-          item.user.id === userid &&
-          item.match &&
-          getIndiaTime(item.match.date) <= getIndiaTime()
+          item.user.id === userid && item.match && item.status !== "placed"
       )
       .sort((a, b) => b.match.num - a.match.num)
       .slice(0, 3);
