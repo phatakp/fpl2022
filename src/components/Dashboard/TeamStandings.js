@@ -10,10 +10,10 @@ export function TeamStandings() {
   const { data: matches, isLoading: loading } = useAPIData(fetchResults);
 
   if (isLoading || loading) return <Loader />;
-  standings
-    .sort((a, b) => (b._nrr > a._nrr ? 1 : -1))
-    .sort((a, b) => b.points - a.points)
-    .sort((a, b) => a.lost - b.lost);
+  standings.sort((a, b) =>
+    b.points > a.points ? 1 : b._nrr > a._nrr ? 1 : -1
+  );
+
   return (
     <Card className="dash-team-standings">
       <Card.Body>
