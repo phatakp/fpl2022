@@ -45,6 +45,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    'core.apps.CoreConfig',
     'apiusers.apps.ApiusersConfig',
     'apiteams.apps.ApiteamsConfig',
     'apimatches.apps.ApimatchesConfig',
